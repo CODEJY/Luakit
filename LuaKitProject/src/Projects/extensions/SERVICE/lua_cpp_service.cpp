@@ -101,7 +101,7 @@ int request(lua_State *L) {
     lua_pop(L, 1);
 
     //调java请求
-    //LOG(WARNING)<<"send request";
+    LOG(WARNING)<<"send request";
     //jmethodID methodId= env->GetMethodID(svcRequester, "sendRequest", "(JJ)V");
     jmethodID methodId= env->GetMethodID(svcRequester, "sendRequest", "(JJLjava/lang/String;)V");
     jstring jstr = env->NewStringUTF(reqJson.c_str());
@@ -119,6 +119,7 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
         lua_State * state = BusinessThread::GetCurrentThreadLuaState();
         JniEnvWrapper env;
 
+        LOG(WARNING)<<"get response";
         BEGIN_STACK_MODIFY(state);
 
         pushStrongUserdataTable(state);
@@ -130,12 +131,12 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
         lua_rawget(state, -2);
         lua_remove(state, -2);//盏顶是userdata
         if (lua_isuserdata(state, -1)) {
-            //LOG(WARNING)<<"get response4";
+            LOG(WARNING)<<"get response userdata";
             lua_getfield(state, -1, "onResponse");//盏顶是onResponse函数
             //LOG(WARNING)<<"get response5";
             if (lua_isnil(state, -1)) {
                 lua_pop(state, 1);
-                //LOG(WARNING)<<"get response6";
+                LOG(WARNING)<<"get response error:userdata is nil";
             } else {
                 //LOG(WARNING)<<"get response7";
                 //-1 function -2 userdata
@@ -146,7 +147,7 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
                 lua_pushstring(state, response.c_str());
                 lua_rawset(state, -3);
                 lua_pcall(state, 1, 0, 0);
-                //LOG(WARNING)<<"get response9";
+                LOG(WARNING)<<"set response data to lua";
             }
             //LOG(WARNING)<<"get response10";
             lua_pop(state, 1);
@@ -157,6 +158,7 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
             lua_rawset(state, -3);
             lua_pop(state, 1);
         } else {
+            LOG(WARNING)<<"get response: top is not userdata";
             lua_pop(state, 1);
         }
         env->DeleteGlobalRef((jobject)task);
