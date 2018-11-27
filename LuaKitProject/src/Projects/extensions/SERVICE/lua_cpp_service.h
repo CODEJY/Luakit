@@ -9,7 +9,7 @@ extern "C" {
 #include "lua.h"
 #include "lauxlib.h"
 }
-#define LUA_SERVICE_METATABLE_NAME "lua.service"
+#define LUA_SERVICE_METATABLE_NAME "lua_service"
 
 extern int luaopen_service(lua_State* L);
 
