@@ -38,6 +38,7 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/.././ \
                     $(LOCAL_PATH)/../curl/include \
                     $(LOCAL_PATH)/../sqlite-amalgamation-3210000 \
                     $(LOCAL_PATH)/../extensions/HTTP \
+                    $(LOCAL_PATH)/../extensions/SERVICE \
                     $(LOCAL_PATH)/../extensions/lua-cjson-master \
                     $(LOCAL_PATH)/../extensions/thread \
                     $(LOCAL_PATH)/../extensions/timer \

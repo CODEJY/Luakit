@@ -10,6 +10,7 @@ extern "C" {
 #endif
 #include "lua_helpers.h"
 #include "lua_http.h"
+#include "lua_cpp_service.h"
 #include "lua_async_socket.h"
 #include "lua_timer.h"
 #include "lua_thread.h"
@@ -17,7 +18,6 @@ extern "C" {
 #include "base/files/file_path.h"
 #include "lua_file.h"
 #include "lua_notify.h"
-#include "lua_language.h"
 #include "LuakitLoader.h"
 #include "xxtea.h"
 
@@ -131,17 +131,17 @@ static void cleanupXXTEAKeyAndSign()
 extern void setXXTEAKeyAndSign(const char *key, int keyLen, const char *sign, int signLen)
 {
     cleanupXXTEAKeyAndSign();
-    
+
     if (key && keyLen && sign && signLen)
     {
         _xxteaKey = (char*)malloc(keyLen);
         memcpy(_xxteaKey, key, keyLen);
         _xxteaKeyLen = keyLen;
-        
+
         _xxteaSign = (char*)malloc(signLen);
         memcpy(_xxteaSign, sign, signLen);
         _xxteaSignLen = signLen;
-        
+
         _xxteaEnabled = true;
     }
     else
@@ -165,7 +165,7 @@ static void skipBOM(const char*& chunk, int& chunkSize)
 extern int luaLoadBuffer(lua_State *L, const char *chunk, int chunkSize, const char *chunkName)
 {
     int r = 0;
-    
+
     if (_xxteaEnabled && strncmp(chunk, _xxteaSign, _xxteaSignLen) == 0)
     {
         // decrypt XXTEA
@@ -186,7 +186,7 @@ extern int luaLoadBuffer(lua_State *L, const char *chunk, int chunkSize, const c
         skipBOM(chunk, chunkSize);
         r = luaL_loadbuffer(L, chunk, chunkSize, chunkName);
     }
-    
+
     if (r)
     {
         switch (r)
@@ -194,15 +194,15 @@ extern int luaLoadBuffer(lua_State *L, const char *chunk, int chunkSize, const c
             case LUA_ERRSYNTAX:
                 LOG(ERROR)<<"[LUA ERROR] load , error: syntax error during pre-compilation."<< chunkName;
                 break;
-                
+
             case LUA_ERRMEM:
                 LOG(ERROR)<<"[LUA ERROR] load , error: memory allocation error."<< chunkName;
                 break;
-                
+
             case LUA_ERRFILE:
                 LOG(ERROR)<<"[LUA ERROR] load , error: cannot open/read file."<< chunkName;
                 break;
-                
+
             default:
                 LOG(ERROR)<<"[LUA ERROR] load , error: unknown."<< chunkName;
         }
@@ -213,12 +213,12 @@ extern int luaLoadBuffer(lua_State *L, const char *chunk, int chunkSize, const c
 static void addLuaLoader(lua_State* L, lua_CFunction func)
 {
     if (!func) return;
-    
+
     // stack content after the invoking of the function
     // get loader table
     lua_getglobal(L, "package");                                  /* L: package */
     lua_getfield(L, -1, "loaders");                               /* L: package, loaders */
-    
+
     // insert loader into index 2
     lua_pushcfunction(L, func);                                   /* L: package, loaders, func */
     for (int i = (int)(lua_objlen(L, -2) + 1); i > 2; --i)
@@ -228,10 +228,10 @@ static void addLuaLoader(lua_State* L, lua_CFunction func)
         lua_rawseti(L, -3, i);                                    /* L: package, loaders, func */
     }
     lua_rawseti(L, -2, 2);                                        /* L: package, loaders */
-    
+
     // set loaders into package
     lua_setfield(L, -2, "loaders");                               /* L: package */
-    
+
     lua_pop(L, 1);
 }
 
@@ -243,10 +243,10 @@ extern int luaInit(lua_State* L)
     luaopen_file(L);
     luaopen_lsqlite3(L);
     luaopen_http(L);
+    luaopen_service(L);
     luaopen_callback(L);
     luaopen_thread(L);
     luaopen_timer(L);
-    luaopen_language(L);
     luaopen_cjson(L);
     luaopen_cjson_safe(L);
     luaopen_async_socket(L);
