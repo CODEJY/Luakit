@@ -8,7 +8,7 @@ INJECTED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Andro
 INJECTED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml:1:1-4:12
 INJECTED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml:1:1-4:12
 	package
-		ADDED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml:1:11-38
+		ADDED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml:1:11-39
 		INJECTED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml
 		INJECTED from /Users/wenwilliam/Desktop/luakitmoschat/Luakit/LuaKitProject/Android Demo/WeatherTest/lib_chromium/src/main/AndroidManifest.xml
 	android:versionName

@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package org.chromium.base.test;
+package org.chromium.basem.test;
 
 public final class R {
 }
