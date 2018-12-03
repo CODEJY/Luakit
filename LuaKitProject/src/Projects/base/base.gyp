@@ -1186,25 +1186,25 @@
           'target_name': 'base_jni_headers',
           'type': 'none',
           'sources': [
-            'android/java/src/org/chromium/base/ActivityStatus.java',
-            'android/java/src/org/chromium/base/BuildInfo.java',
-            'android/java/src/org/chromium/base/CommandLine.java',
-            'android/java/src/org/chromium/base/ContentUriUtils.java',
-            'android/java/src/org/chromium/base/CpuFeatures.java',
-            'android/java/src/org/chromium/base/ImportantFileWriterAndroid.java',
-            'android/java/src/org/chromium/base/MemoryPressureListener.java',
-            'android/java/src/org/chromium/base/JavaHandlerThread.java',
-            'android/java/src/org/chromium/base/PathService.java',
-            'android/java/src/org/chromium/base/PathUtils.java',
-            'android/java/src/org/chromium/base/PowerMonitor.java',
-            'android/java/src/org/chromium/base/SystemMessageHandler.java',
-            'android/java/src/org/chromium/base/SysUtils.java',
-            'android/java/src/org/chromium/base/ThreadUtils.java',
+            'android/java/src/org/chromium/basem/ActivityStatus.java',
+            'android/java/src/org/chromium/basem/BuildInfo.java',
+            'android/java/src/org/chromium/basem/CommandLine.java',
+            'android/java/src/org/chromium/basem/ContentUriUtils.java',
+            'android/java/src/org/chromium/basem/CpuFeatures.java',
+            'android/java/src/org/chromium/basem/ImportantFileWriterAndroid.java',
+            'android/java/src/org/chromium/basem/MemoryPressureListener.java',
+            'android/java/src/org/chromium/basem/JavaHandlerThread.java',
+            'android/java/src/org/chromium/basem/PathService.java',
+            'android/java/src/org/chromium/basem/PathUtils.java',
+            'android/java/src/org/chromium/basem/PowerMonitor.java',
+            'android/java/src/org/chromium/basem/SystemMessageHandler.java',
+            'android/java/src/org/chromium/basem/SysUtils.java',
+            'android/java/src/org/chromium/basem/ThreadUtils.java',
           ],
           'conditions': [
             ['google_tv==1', {
              'sources': [
-               'android/java/src/org/chromium/base/ContextTypes.java',
+               'android/java/src/org/chromium/basem/ContextTypes.java',
              ],
             }],
           ],
@@ -1218,7 +1218,7 @@
           'target_name': 'base_unittests_jni_headers',
           'type': 'none',
           'sources': [
-            'test/android/java/src/org/chromium/base/ContentUriTestUtils.java',
+            'test/android/java/src/org/chromium/basem/ContentUriTestUtils.java',
           ],
           'variables': {
             'jni_gen_package': 'base',
@@ -1263,10 +1263,10 @@
           # Java constant declarations matching the ones in
           # android/activity_state_list.h.
           'sources': [
-            'android/java/src/org/chromium/base/ActivityState.template',
+            'android/java/src/org/chromium/basem/ActivityState.template',
           ],
           'variables': {
-            'package_name': 'org/chromium/base',
+            'package_name': 'org/chromium/basem',
             'template_deps': ['android/activity_state_list.h'],
           },
           'includes': [ '../build/android/java_cpp_template.gypi' ],
@@ -1275,10 +1275,10 @@
           'target_name': 'base_java_memory_pressure_level_list',
           'type': 'none',
           'sources': [
-            'android/java/src/org/chromium/base/MemoryPressureLevelList.template',
+            'android/java/src/org/chromium/basem/MemoryPressureLevelList.template',
           ],
           'variables': {
-            'package_name': 'org/chromium/base',
+            'package_name': 'org/chromium/basem',
             'template_deps': ['memory/memory_pressure_level_list.h'],
           },
           'includes': [ '../build/android/java_cpp_template.gypi' ],
