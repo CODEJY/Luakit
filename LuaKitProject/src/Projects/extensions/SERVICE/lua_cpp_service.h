@@ -17,5 +17,5 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_moschat_mobile_framework_service_LuaSvcPBRequester_onResponse(JNIEnv *env, jclass type, jlong requestId, jlong threadId
+Java_com_moschat_mobile_framework_service_jni_LuaSvcPBRequester_onResponse(JNIEnv *env, jclass type, jlong requestId, jlong threadId
         ,jstring response);

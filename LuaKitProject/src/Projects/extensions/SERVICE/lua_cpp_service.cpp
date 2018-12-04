@@ -70,12 +70,13 @@ int request(lua_State *L) {
 
     BusinessThreadID now_thread_identifier;
     BusinessThread::GetCurrentThreadIdentifier(&now_thread_identifier);
-    //LOG(WARNING)<<"send request threadid:" << now_thread_identifier;
 
     JniEnvWrapper env;
-    jclass svcRequester = env->FindClass("com/moschat/mobile/framework/service/LuaSvcPBRequester");
+    jclass svcRequester = env->FindClass("com/moschat/mobile/framework/service/jni/LuaSvcPBRequester");
+    if (svcRequester == NULL) {
+        LOG(WARNING)<<"svcRequester null";
+    }
     jobject requesterObject = env->AllocObject(svcRequester);
-
     requesterObject = env->NewGlobalRef(requesterObject);
 
     size_t nbytes = sizeof(void *);
@@ -91,7 +92,6 @@ int request(lua_State *L) {
     pushStrongUserdataTable(L);
     lua_pushlightuserdata(L, requesterObject);
     lua_pushvalue(L, -3);
-    //LOG(WARNING)<<"typename:" << lua_typename(L, lua_type(L, -1));
     lua_rawset(L, -3);
     lua_pop(L, 1);
 
@@ -102,11 +102,9 @@ int request(lua_State *L) {
 
     //调java请求
     LOG(WARNING)<<"send request";
-    //jmethodID methodId= env->GetMethodID(svcRequester, "sendRequest", "(JJ)V");
     jmethodID methodId= env->GetMethodID(svcRequester, "sendRequest", "(JJLjava/lang/String;)V");
     jstring jstr = env->NewStringUTF(reqJson.c_str());
     env->CallVoidMethod(requesterObject, methodId, (jlong)requesterObject, (jlong)now_thread_identifier, jstr);
-    //env->CallVoidMethod(requesterObject, methodId, (jlong)requesterObject, now_thread_identifier);
 
     END_STACK_MODIFY(L, 0);
     return 0;
@@ -123,22 +121,18 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
         BEGIN_STACK_MODIFY(state);
 
         pushStrongUserdataTable(state);
-        //LOG(WARNING)<<"get response1:" << lua_typename(state, lua_type(state, -1));
-
         lua_pushlightuserdata(state, (jobject)task);
-        //LOG(WARNING)<<"get response2:" << lua_typename(state, lua_type(state, -1));
-
         lua_rawget(state, -2);
         lua_remove(state, -2);//盏顶是userdata
         if (lua_isuserdata(state, -1)) {
             LOG(WARNING)<<"get response userdata";
             lua_getfield(state, -1, "onResponse");//盏顶是onResponse函数
-            //LOG(WARNING)<<"get response5";
+
             if (lua_isnil(state, -1)) {
                 lua_pop(state, 1);
                 LOG(WARNING)<<"get response error:userdata is nil";
             } else {
-                //LOG(WARNING)<<"get response7";
+
                 //-1 function -2 userdata
                 lua_newtable(state);
 
@@ -149,7 +143,7 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
                 lua_pcall(state, 1, 0, 0);
                 LOG(WARNING)<<"set response data to lua";
             }
-            //LOG(WARNING)<<"get response10";
+
             lua_pop(state, 1);
             //在强表清除userdata
             pushStrongUserdataTable(state);
@@ -162,7 +156,6 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
             lua_pop(state, 1);
         }
         env->DeleteGlobalRef((jobject)task);
-        //LOG(WARNING)<<"get response12";
         END_STACK_MODIFY(state, 0);
     }));
     return 0;
@@ -173,7 +166,7 @@ extern int responseToLua(uint32_t threadId, jlong task, const std::string& resp)
  */
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_moschat_mobile_framework_service_LuaSvcPBRequester_onResponse(JNIEnv *env, jclass type, jlong requestId, jlong threadId
+Java_com_moschat_mobile_framework_service_jni_LuaSvcPBRequester_onResponse(JNIEnv *env, jclass type, jlong requestId, jlong threadId
         ,jstring response) {
         //LOG(WARNING)<<"onResponse";
         const char *charStr = env->GetStringUTFChars(response, JNI_FALSE);
