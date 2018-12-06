@@ -11,6 +11,7 @@
 #include "common/base_lambda_support.h"
 #include "tools/lua_helpers.h"
 #include "JniLuaConvertor.h"
+#include "lua_yoga.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
