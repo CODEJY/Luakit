@@ -10,11 +10,12 @@ extern "C" {
 }
 #endif
 #include "lua_helpers.h"
-#include "lua_http.h"
 #if defined(OS_ANDROID)
 #include "lua_cpp_service.h"
-#endif
+#else
+#include "lua_http.h"
 #include "lua_async_socket.h"
+#endif
 #include "lua_timer.h"
 #include "lua_thread.h"
 #include "base/path_service.h"
@@ -246,16 +247,17 @@ extern int luaInit(lua_State* L)
     luaopen_file(L);
     luaopen_mobdebug_scripts(L);
     luaopen_lsqlite3(L);
-    luaopen_http(L);
 #if defined(OS_ANDROID)
     luaopen_service(L);
+#else
+    luaopen_http(L);
+    luaopen_async_socket(L);
 #endif
     luaopen_callback(L);
     luaopen_thread(L);
     luaopen_timer(L);
     luaopen_cjson(L);
     luaopen_cjson_safe(L);
-    luaopen_async_socket(L);
     luaopen_notification(L);
     addLuaLoader(L,luakit_loader);
     base::FilePath documentDir;

@@ -34,15 +34,11 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/.././ \
 					$(LOCAL_PATH)/../jni \
                     $(LOCAL_PATH)/../common/ \
                     $(LOCAL_PATH)/../lua-5.1.5/lua \
-                    $(LOCAL_PATH)/../openssl/include/ \
-                    $(LOCAL_PATH)/../curl/include \
                     $(LOCAL_PATH)/../sqlite-amalgamation-3210000 \
-                    $(LOCAL_PATH)/../extensions/HTTP \
                     $(LOCAL_PATH)/../extensions/SERVICE \
                     $(LOCAL_PATH)/../extensions/lua-cjson-master \
                     $(LOCAL_PATH)/../extensions/thread \
                     $(LOCAL_PATH)/../extensions/timer \
-                    $(LOCAL_PATH)/../extensions/AsyncSocket \
                     $(LOCAL_PATH)/../extensions/File \
                     $(LOCAL_PATH)/../extensions/debug \
                     $(LOCAL_PATH)/../extensions/luasocket \
