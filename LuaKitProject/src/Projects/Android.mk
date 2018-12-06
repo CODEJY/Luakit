@@ -39,7 +39,6 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/./ \
                     $(LOCAL_PATH)/extensions/lua-cjson-master \
                     $(LOCAL_PATH)/extensions/thread \
                     $(LOCAL_PATH)/extensions/timer \
-                    $(LOCAL_PATH)/extensions/AsyncSocket \
                     $(LOCAL_PATH)/extensions/File \
                     $(LOCAL_PATH)/extensions/debug \
                     $(LOCAL_PATH)/extensions/luasocket \
