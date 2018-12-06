@@ -27,6 +27,10 @@ JNIEXPORT void JNICALL Java_com_common_luakit_LuaHelper_startLuaKitNative
     BusinessRuntime* Business_runtime(BusinessRuntime::Create());
     Business_runtime->Initialize(delegate);
     Business_runtime->Run();
+
+    lua_State * L = BusinessThread::GetCurrentThreadLuaState();
+    luaopen_yoga(L);
+    luaopen_yoga_func(L);
 }
 
 void pushLuaModule(std::string moduleName)
