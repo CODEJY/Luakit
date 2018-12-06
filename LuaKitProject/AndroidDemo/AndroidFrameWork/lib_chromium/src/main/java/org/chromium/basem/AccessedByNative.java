@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.chromium.base;
+package org.chromium.basem;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,14 +10,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @CalledByNative is used by the JNI generator to create the necessary JNI
- * bindings and expose this method to native code.
+ *  @AccessedByNative is used to ensure proguard will keep this field, since it's
+ *  only accessed by native.
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.CLASS)
-public @interface CalledByNative {
-    /*
-     *  If present, tells which inner class the method belongs to.
-     */
+public @interface AccessedByNative {
     public String value() default "";
 }

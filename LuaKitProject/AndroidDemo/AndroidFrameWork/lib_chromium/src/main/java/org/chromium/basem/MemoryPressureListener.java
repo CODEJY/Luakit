@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.chromium.base;
+package org.chromium.basem;
 
 import android.app.Activity;
 import android.content.ComponentCallbacks2;
@@ -20,27 +20,27 @@ public class MemoryPressureListener {
      * Sending an intent with this action to Chrome will cause it to issue a call to onLowMemory
      * thus simulating a low memory situations.
      */
-    private static final String ACTION_LOW_MEMORY = "org.chromium.base.ACTION_LOW_MEMORY";
+    private static final String ACTION_LOW_MEMORY = "org.chromium.basem.ACTION_LOW_MEMORY";
 
     /**
      * Sending an intent with this action to Chrome will cause it to issue a call to onTrimMemory
      * thus simulating a low memory situations.
      */
-    private static final String ACTION_TRIM_MEMORY = "org.chromium.base.ACTION_TRIM_MEMORY";
+    private static final String ACTION_TRIM_MEMORY = "org.chromium.basem.ACTION_TRIM_MEMORY";
 
     /**
      * Sending an intent with this action to Chrome will cause it to issue a call to onTrimMemory
      * with notification level TRIM_MEMORY_RUNNING_CRITICAL thus simulating a low memory situation
      */
     private static final String ACTION_TRIM_MEMORY_RUNNING_CRITICAL =
-            "org.chromium.base.ACTION_TRIM_MEMORY_RUNNING_CRITICAL";
+            "org.chromium.basem.ACTION_TRIM_MEMORY_RUNNING_CRITICAL";
 
     /**
      * Sending an intent with this action to Chrome will cause it to issue a call to onTrimMemory
      * with notification level TRIM_MEMORY_MODERATE thus simulating a low memory situation
      */
     private static final String ACTION_TRIM_MEMORY_MODERATE =
-            "org.chromium.base.ACTION_TRIM_MEMORY_MODERATE";
+            "org.chromium.basem.ACTION_TRIM_MEMORY_MODERATE";
 
     @CalledByNative
     private static void registerSystemCallback(Context context) {

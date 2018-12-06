@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.chromium.base;
+package org.chromium.basem;
 
 // The only purpose of this class is to allow sending CPU properties
 // from the browser process to sandboxed renderer processes. This is
