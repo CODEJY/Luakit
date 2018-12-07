@@ -88,8 +88,6 @@ public class YogaTextView extends android.support.v7.widget.AppCompatTextView im
 
     @Override
     public void inflate() {
-        setPadding((int) yogaNode.getPadding(YogaEdge.LEFT).value, (int) yogaNode.getPadding(YogaEdge.TOP).value,
-                (int) yogaNode.getPadding(YogaEdge.RIGHT).value, (int) yogaNode.getPadding(YogaEdge.BOTTOM).value);
         setX(yogaNode.getLayoutX());
         setY(yogaNode.getLayoutY());
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -102,8 +100,6 @@ public class YogaTextView extends android.support.v7.widget.AppCompatTextView im
         if ((int) yogaNode.getHeight().value > 0) {
             params.height = (int) yogaNode.getHeight().value;
         }
-        params.setMargins((int) yogaNode.getMargin(YogaEdge.LEFT).value, (int) yogaNode.getMargin(YogaEdge.TOP).value,
-                (int) yogaNode.getMargin(YogaEdge.RIGHT).value, (int) yogaNode.getMargin(YogaEdge.BOTTOM).value);
         LogUtil.i(TAG, "params.width = " + params.width + ", params.height = " + params.height);
         setLayoutParams(params);
     }
