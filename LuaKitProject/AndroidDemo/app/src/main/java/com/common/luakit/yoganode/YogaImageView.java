@@ -114,7 +114,7 @@ public class YogaImageView extends SimpleCircleImageView implements IYoga {
      */
     public void nativeSetImagePath(String imagePath) {
         try {
-            InputStream inputStream = getContext().getAssets().open(imagePath);
+            InputStream inputStream = getContext().getAssets().open("images/" + imagePath);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(inputStream, null, options);
