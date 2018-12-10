@@ -57,7 +57,7 @@ JNIEXPORT void JNICALL Java_com_common_luakit_YogaView_dispose
     assert(lua_istable(state, -1));
     lua_pushnil(state);  /* first key */
     while (lua_next(state, -2)) {
-        YogaInfo *viewInfo = (YogaInfo *)luaL_checkudata(state, 1, LUA_YOGA_VIEW_METATABLE_NAME);
+        YogaInfo *viewInfo = (YogaInfo *)luaL_checkudata(state, -1, LUA_YOGA_VIEW_METATABLE_NAME);
         java_weak_ref *javaView = (java_weak_ref *)viewInfo->view;
         delete javaView;
         viewInfo->view = NULL;

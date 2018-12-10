@@ -5,6 +5,8 @@ extern "C" {
 #include "tools/lua_helpers.h"
 #include "lua_yoga.h"
 #include "luaYogaBridge.h"
+//#include "commonHelper.h"
+
 #include "base/logging.h"
 #include <vector>
 #include <string>
@@ -12,7 +14,6 @@ extern "C" {
 
 
 
-#include "commonHelper.cpp"
 
 
 enum ActionType {
@@ -326,21 +327,6 @@ static void processUserData(lua_State *state,
     viewInfo->isDead = isDead;
 }
 
-static YogaType processFunc(std::string functionName){
-    YogaType backType =  CONTAINER;
-    
-    if(functionName == ADD_CONTAINER){ backType = CONTAINER;}
-    else if(functionName == ADD_ListView){ backType = LIST;}
-    else if(functionName == ADD_CollectionView){ backType = COLLECTIONVIEW;}
-    else if(functionName == RELOAD_YOGA){ backType = OTHER;}
-    else if(functionName == REMOVE_FROM_PARENT){ backType = OTHER;}
-    else if(functionName == ADD_ImageView){ backType = IMAGE;}
-    else if(functionName == ADD_TEXT){ backType = TEXT;}
-    else if(functionName == List_Reload){ backType = OTHER;}
-    
-    return backType;
-}
-
 static int __yogaViewIndex(lua_State *L)
 {
     BEGIN_STACK_MODIFY(L);
@@ -502,6 +488,76 @@ extern int luaopen_yoga_func(lua_State *L) {
     return 0;
 }
 
+extern int heightForTextTable(lua_State *L) {
+    BEGIN_STACK_MODIFY(L);
+    
+    std::string text = getValueFromState(L, Value_String, "text").value_string;
+   
+    std::string fontName = getValueFromState(L, Value_String, "fontName").value_string;
+    
+    float textFontSize = getValueFromState(L, Value_Number, "fontSize").value_float;
+    
+    float textWidth = getValueFromState(L, Value_Number, "textWidth").value_float;
+
+    float result = heightForTextTable(text, textWidth, textFontSize, fontName);
+    
+    lua_pushnumber(L, result);
+    
+    END_STACK_MODIFY(L, 1)
+    
+    return 1;
+}
+
+extern int goFlutter(lua_State *L) {
+    BEGIN_STACK_MODIFY(L);
+    
+    std::string module = lua_tostring(L, 1);
+    
+    std::string version = "";
+    
+    if (lua_gettop(L)>1) {
+        version = lua_tostring(L, 2);
+    }
+
+    goFlutter(module, version);
+    
+    END_STACK_MODIFY(L, 0)
+    
+    return 0;
+}
+
+extern int widthForTextTable(lua_State *L) {
+    BEGIN_STACK_MODIFY(L);
+    
+    std::string text = getValueFromState(L, Value_String, "text").value_string;
+    
+    std::string fontName = getValueFromState(L, Value_String, "fontName").value_string;
+    
+    float textHeight = getValueFromState(L, Value_Number, "textHeight").value_float;
+    
+    float textFontSize = getValueFromState(L, Value_Number, "textFontSize").value_float;
+    
+    float result = widthForTextTable(text, textHeight, textFontSize, fontName);
+    
+    lua_pushnumber(L, result);
+    
+    END_STACK_MODIFY(L, 1)
+    
+    return 1;
+}
+
+
+extern int showToast(lua_State *state) {
+    
+    BEGIN_STACK_MODIFY(state);
+   
+    showToast(lua_tostring(state, -1));
+    
+    END_STACK_MODIFY(state, 0)
+    
+    return 0;
+}
+
 static void addYogaEnum(lua_State *L) {
     //    YGAlign
     lua_pushinteger(L, 0);
@@ -600,4 +656,16 @@ static void addYogaEnum(lua_State *L) {
     lua_setglobal(L, "ContentModeCenter");//android center_crop
     lua_pushinteger(L, 9);
     lua_setglobal(L, "ContentModeTopLeft");//android matrix
+    
+    lua_pushcfunction(L, heightForTextTable);
+    lua_setglobal(L, "heightForTextTable");
+
+    lua_pushcfunction(L, widthForTextTable);
+    lua_setglobal(L, "widthForTextTable");
+    
+    lua_pushcfunction(L, showToast);
+    lua_setglobal(L, "showToast");
+
+    lua_pushcfunction(L, goFlutter);
+    lua_setglobal(L, "goFlutter");
 }
