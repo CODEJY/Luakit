@@ -323,7 +323,7 @@ void setTextNumberOfLines(void *view, float numberOfLines) {
     jmethodID jmid = env->GetMethodID(jhostViewClass, "nativeSetTextNumberOfLines", "(F)V");
     if (jmid == NULL) {
         LOGD("Failed!! method nativeSetTextNumberOfLines not found");
-        return -1;
+        return;
     }
     env->CallVoidMethod(jhostView, jmid, (jfloat)numberOfLines);
 }
