@@ -49,6 +49,8 @@ public class YogaView extends FrameLayout implements IYoga {
 
     private int width, height;
 
+    private boolean hasInflate = false;
+
     public YogaView(@NonNull Context context) {
         this(context, null);
     }
@@ -227,10 +229,18 @@ public class YogaView extends FrameLayout implements IYoga {
 
     @Override
     public void inflate() {
+        LogUtil.i(TAG, "The address of the view is : " + this);
+        if (hasInflate) {
+            for (int i = 0; i < rootNode.getChildCount(); i++) {
+                yogaNodeWrapper.getChildView(i).inflate();
+            }
+            return;
+        }
         for (int i = 0; i < rootNode.getChildCount(); i++) {
             yogaNodeWrapper.getChildView(i).inflate();
             View child = (View) yogaNodeWrapper.getChildView(i);
             addView(child, i);
+            hasInflate = true;
         }
     }
 
@@ -243,6 +253,6 @@ public class YogaView extends FrameLayout implements IYoga {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         // important! Release the native memory.
-        dispose(self);
+        // dispose(self);
     }
 }

@@ -4,11 +4,15 @@
 #include "lua_yoga.h"
 #include "java_weak_ref.h"
 #include "lua_helpers.h"
+#include "android/log.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 #include "lua.h"
 #include "lauxlib.h"
+
+#define TAG    "LuaYogaDemo-jni" 
+#define LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
 
 
 JNIEXPORT jlong JNICALL Java_com_common_luakit_YogaView_loadLua
@@ -48,7 +52,8 @@ JNIEXPORT jlong JNICALL Java_com_common_luakit_YogaView_loadLua
 
 JNIEXPORT void JNICALL Java_com_common_luakit_YogaView_dispose
 (JNIEnv *env, jobject thiz, jlong ref) {
-	  lua_State * state = BusinessThread::GetCurrentThreadLuaState();
+    LOGD("Java_com_common_luakit_YogaView_dispose");
+	lua_State * state = BusinessThread::GetCurrentThreadLuaState();
     java_weak_ref *v = (java_weak_ref *)ref;
     pushStrongUserdataTable(state);
     lua_pushlightuserdata(state, v);

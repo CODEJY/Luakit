@@ -17,7 +17,7 @@ local observeReloadNotification = function()
                     print("testNotification postNotification")
                     if data then
                         for k,v in pairs(data) do
-                            --mlDataSource[k] = v
+                            mlDataSource[k] = v
                             if listView == null then
                                 print("listView null")
                             end
@@ -75,100 +75,112 @@ local yogaBuilder = function(container)
         cell.flexDirection = YGFlexDirectionColumn
         cell.alignItems = YGAlignCenter
         cell.backgroundColor = { a = 1.0, r = 0.114, g = 0.122, b = 0.129 }
+
         -- cell 重用 not init 才add，以im为key存储
-        --[[
         if not cell.hasInit then
-            cell.im = cell.addImageView()
+            print("11111111111111111111")
+            cell.backgroundIv = cell.addImageView()
+            cell.allContentContainer = cell.addContainer()
+            print("2222222222222222222222")
+            cell.titleContainer = cell.allContentContainer.addContainer()
+            cell.titleTv = cell.titleContainer.addTextView()
+            cell.userInfoContainer = cell.allContentContainer.addContainer()
+            print("3333333333333")
+            cell.userAvatarIv = cell.userInfoContainer.addImageView()
+            cell.userNameContainer = cell.userInfoContainer.addContainer()
+            cell.userNameTv = cell.userInfoContainer.addTextView()
+            cell.nearlyStatusContainer = cell.userNameContainer.addContainer()
+            cell.nearlyStatusIv = cell.nearlyStatusContainer.addImageView()
+            cell.nearlyStatusTv = cell.nearlyStatusContainer.addTextView()
+            cell.rankContainer = cell.userInfoContainer.addContainer()
+            print("4444444444")
+            cell.rankBgIv = cell.rankContainer.addImageView()
+            cell.rankIv = cell.rankContainer.addImageView()
+            cell.dataContainer = cell.allContentContainer.addContainer()
+            cell.starsContainer = cell.rankContainer.addContainer()
+            cell.starsContainer = cell.rankContainer.addContainer()
+            cell.winLossContainer = cell.dataContainer.addContainer()
+            cell.winLostValueTv = cell.winLossContainer.addTextView()
+            cell.winLossTv = cell.winLossContainer.addTextView()
+            cell.killsContainer = cell.dataContainer.addContainer()
+            cell.killsValueTv = cell.killsContainer.addTextView()
+            cell.killsTv = cell.killsContainer.addTextView()
+            cell.assistsContainer = cell.dataContainer.addContainer()
+            cell.assistsValueTv = cell.assistsContainer.addTextView()
+            cell.assistsTv = cell.assistsContainer.addTextView()
+            cell.ratingContainer = cell.dataContainer.addContainer()
+            cell.ratingValueTv = cell.ratingContainer.addTextView()
+            cell.ratingTv = cell.ratingContainer.addTextView()
+            print("555555")
         end
-        cell.im.isEnabled = true;
-        cell.im.width = 300
-        cell.im.imageViewContentMode = ContentModeTopLeft
-        cell.im.height = 100
-        cell.im.margin = 5
-        if column%2 == 0 then
-            cell.im.imagePath = 'zz.png'
-            cell.im.imageName_hl = 'highlightImage'
-        else
-            cell.im.imagePath = 'zz.png'
-            cell.im.imageName_hl = 'testImg'
-        end
-        cell.hasInit = true
-        --]]
 
-        local backgroundIv = cell.addImageView()      --取值->添加图层关系： addImageView()
-        backgroundIv.isEnabled = true
-        backgroundIv.width = 334
-        backgroundIv.height = 180
-        backgroundIv.imagePath = 'tools_card_ml.png'
+        cell.backgroundIv.isEnabled = true
+        cell.backgroundIv.width = 334
+        cell.backgroundIv.height = 180
+        cell.backgroundIv.imagePath = 'tools_card_ml.png'
 
-        local allContentContainer = cell.addContainer()
-        allContentContainer.width = 334
-        allContentContainer.height = 180
-        allContentContainer.marginTop = -180
-        allContentContainer.alignItems = YGAlignCenter
-        allContentContainer.flexDirection = YGFlexDirectionColumn
+        cell.allContentContainer.width = 334
+        cell.allContentContainer.height = 180
+        cell.allContentContainer.marginTop = -180
+        cell.allContentContainer.alignItems = YGAlignCenter
+        cell.allContentContainer.flexDirection = YGFlexDirectionColumn
 
-        local titleContainer = allContentContainer.addContainer()
-        titleContainer.width = 334
-        titleContainer.height = 45
-        titleContainer.isEnabled = true
-        titleContainer.alignItems = YGAlignCenter
-        titleContainer.flexDirection = YGFlexDirectionColumn
-        titleContainer.marginTop = 14
+        cell.titleContainer.width = 334
+        cell.titleContainer.height = 45
+        cell.titleContainer.isEnabled = true
+        cell.titleContainer.alignItems = YGAlignCenter
+        cell.titleContainer.flexDirection = YGFlexDirectionColumn
+        cell.titleContainer.marginTop = 14
 
-        local titleTv = titleContainer.addTextView()
-        titleTv.width = 300
-        titleTv.height = 20
-        titleTv.text = "Mobile Legends"
-        titleTv.textTable = {
+        cell.titleTv.width = 300
+        cell.titleTv.height = 20
+        cell.titleTv.text = "Mobile Legends"
+        cell.titleTv.textTable = {
             fontSize = 16,
             isBold = false,
             alignment = TextAlignmentCenter,
             color = { a = 1.0, r = 1.0, g = 1.0, b = 1.0 }
         }
+        print("33333333333333333")
+        cell.userInfoContainer.isEnabled = true
+        cell.userInfoContainer.width = 334
+        cell.userInfoContainer.height = 66
+        cell.userInfoContainer.alignItems = YGAlignFlexStart
+        cell.userInfoContainer.flexDirection = YGFlexDirectionRow
 
-        local userInfoContainer = allContentContainer.addContainer()
-        userInfoContainer.isEnabled = true
-        userInfoContainer.width = 334
-        userInfoContainer.height = 66
-        userInfoContainer.alignItems = YGAlignFlexStart
-        userInfoContainer.flexDirection = YGFlexDirectionRow
-
-        local userAvatarIv = userInfoContainer.addImageView()
-        userAvatarIv.width = 46
-        userAvatarIv.height = 46
-        userAvatarIv.viewCornerRadius = 23
+        cell.userAvatarIv.width = 46
+        cell.userAvatarIv.height = 46
+        cell.userAvatarIv.viewCornerRadius = 23
         print("testYoga test 1")
         if mlDataSource then
             if mlDataSource["userIcon"] then
-                userAvatarIv.imagePath = mlDataSource["userIcon"]
+                cell.userAvatarIv.imagePath = mlDataSource["userIcon"]
             else
-                userAvatarIv.imagePath = 'zz.png'
+                cell.userAvatarIv.imagePath = 'zz.png'
             end
         end
         print("testYoga test 2")
-        userAvatarIv.marginStart = 16
+        cell.userAvatarIv.marginStart = 16
 
-        local userNameContainer = userInfoContainer.addContainer()
-        userNameContainer.width = 172
-        userNameContainer.height = 36
-        userNameContainer.alignItems = YGAlignFlexStart
-        userNameContainer.flexDirection = YGFlexDirectionColumn
-        userNameContainer.marginStart = 9
-        userNameContainer.marginTop = 4
+        cell.userNameContainer.width = 172
+        cell.userNameContainer.height = 36
+        cell.userNameContainer.alignItems = YGAlignFlexStart
+        cell.userNameContainer.flexDirection = YGFlexDirectionColumn
+        cell.userNameContainer.marginStart = 9
+        cell.userNameContainer.marginTop = 4
 
-        local userNameTv = userNameContainer.addTextView()
-        userNameTv.width = 172
-        userNameTv.height = 18
+        cell.userNameTv.width = 172
+        cell.userNameTv.height = 18
         if mlDataSource then
             if mlDataSource.nickName then
-                userNameTv.text = mlDataSource.nickName
+                print("nickName test: " .. mlDataSource["nickName"])
+                cell.userNameTv.text = mlDataSource.nickName
             else
-                userNameTv.text = "---"
+                cell.userNameTv.text = "---"
             end
         end
         print("testYoga test 3")
-        userNameTv.textTable = {
+        cell.userNameTv.textTable = {
             fontSize = 15,
             isBold = false,
             alignment = TextAlignmentLeft,
@@ -176,26 +188,23 @@ local yogaBuilder = function(container)
             numberOfLines = 1
         }
 
-        local nearlyStatusContainer = userNameContainer.addContainer()
-        nearlyStatusContainer.width = 172
-        nearlyStatusContainer.height = 14
-        nearlyStatusContainer.marginTop = 2
-        nearlyStatusContainer.alignItems = YGAlignCenter
-        nearlyStatusContainer.flexDirection = YGFlexDirectionRow
+        cell.nearlyStatusContainer.width = 172
+        cell.nearlyStatusContainer.height = 14
+        cell.nearlyStatusContainer.marginTop = 2
+        cell.nearlyStatusContainer.alignItems = YGAlignCenter
+        cell.nearlyStatusContainer.flexDirection = YGFlexDirectionRow
 
-        local nearlyStatusIv = nearlyStatusContainer.addImageView()
-        nearlyStatusIv.width = 12
-        nearlyStatusIv.height = 12
+        cell.nearlyStatusIv.width = 12
+        cell.nearlyStatusIv.height = 12
         -- 读取最近上升还是下降
-        nearlyStatusIv.imagePath = "stars_rise.png"
+        cell.nearlyStatusIv.imagePath = "stars_rise.png"
 
         print("testYoga test 4")
-        local nearlyStatusTv = nearlyStatusContainer.addTextView()
-        nearlyStatusTv.width = 172
-        nearlyStatusTv.height = 18
+        cell.nearlyStatusTv.width = 172
+        cell.nearlyStatusTv.height = 18
         --读取最近等级状态
-        nearlyStatusTv.text = "Nearly status:" .. " " .. "-" .. " " .. "stars"
-        nearlyStatusTv.textTable = {
+        cell.nearlyStatusTv.text = "Nearly status:" .. " " .. "-" .. " " .. "stars"
+        cell.nearlyStatusTv.textTable = {
             fontSize = 12,
             isBold = false,
             alignment = TextAlignmentLeft,
@@ -203,32 +212,28 @@ local yogaBuilder = function(container)
         }
 
         print("testYoga test 5")
-        local rankContainer = userInfoContainer.addContainer()
-        rankContainer.width = 60
-        rankContainer.height = 64
-        rankContainer.marginStart = 15
-        rankContainer.alignItems = YGAlignFlexStart
-        rankContainer.flexDirection = YGFlexDirectionColumn
+        cell.rankContainer.width = 60
+        cell.rankContainer.height = 64
+        cell.rankContainer.marginStart = 15
+        cell.rankContainer.alignItems = YGAlignFlexStart
+        cell.rankContainer.flexDirection = YGFlexDirectionColumn
 
-        local rankBgIv = rankContainer.addImageView()
-        rankBgIv.width = 60
-        rankBgIv.height = 52
+        cell.rankBgIv.width = 60
+        cell.rankBgIv.height = 52
         -- 根据等级匹配图片
-        rankBgIv.imagePath = "rank_4.png"
+        cell.rankBgIv.imagePath = "rank_4.png"
 
-        local rankIv = rankContainer.addImageView()
-        rankIv.width = 60
-        rankIv.height = 52
-        rankIv.marginTop = -52
+        cell.rankIv.width = 60
+        cell.rankIv.height = 52
+        cell.rankIv.marginTop = -52
         -- 根据等级匹配图片
-        rankIv.imagePath = "rank_master.png"
+        cell.rankIv.imagePath = "rank_master.png"
 
-        local starsContainer = rankContainer.addContainer()
-        starsContainer.width = 60
-        starsContainer.height = 9
-        starsContainer.alignItems = YGAlignFlexStart
-        starsContainer.flexDirection = YGFlexDirectionRow
-        starsContainer.justifyContent = YGJustifyCenter
+        cell.starsContainer.width = 60
+        cell.starsContainer.height = 9
+        cell.starsContainer.alignItems = YGAlignFlexStart
+        cell.starsContainer.flexDirection = YGFlexDirectionRow
+        cell.starsContainer.justifyContent = YGJustifyCenter
 
         -- 根据星星数量增加星星数量
         --if mlRank ~= null then
@@ -243,13 +248,12 @@ local yogaBuilder = function(container)
         --    end
         --end
 
-        local dataContainer = allContentContainer.addContainer()
-        dataContainer.width = 334
-        dataContainer.height = 44
-        dataContainer.marginTop = 6
-        dataContainer.alignItems = YGAlignCenter
-        dataContainer.justifyContent = YGJustifySpaceBetween
-        dataContainer.flexDirection = YGFlexDirectionRow
+        cell.dataContainer.width = 334
+        cell.dataContainer.height = 44
+        cell.dataContainer.marginTop = 6
+        cell.dataContainer.alignItems = YGAlignCenter
+        cell.dataContainer.justifyContent = YGJustifySpaceBetween
+        cell.dataContainer.flexDirection = YGFlexDirectionRow
 
         local dataSubContainerWidth = 82
         local dataSubContainerHeight = 44
@@ -271,91 +275,81 @@ local yogaBuilder = function(container)
             color = { a = 0.6, r = 1.0, g = 1.0, b = 1.0 }
         }
 
-        local winLossContainer = dataContainer.addContainer()
-        winLossContainer.width = dataSubContainerWidth
-        winLossContainer.height = dataSubContainerHeight
-        winLossContainer.alignItems = dataSubContainerAlignItems
-        winLossContainer.flexDirection = dataSubContainerFlexDirection
 
-        local winLostValueTv = winLossContainer.addTextView()
-        winLostValueTv.width = textViewWidth
-        winLostValueTv.height = textValueHeight
+        cell.winLossContainer.width = dataSubContainerWidth
+        cell.winLossContainer.height = dataSubContainerHeight
+        cell.winLossContainer.alignItems = dataSubContainerAlignItems
+        cell.winLossContainer.flexDirection = dataSubContainerFlexDirection
+
+        cell.winLostValueTv.width = textViewWidth
+        cell.winLostValueTv.height = textValueHeight
         --读取最近十场胜负数
-        winLostValueTv.text = "---"
-        winLostValueTv.textTable = subContainerTextTable_Value
+        cell.winLostValueTv.text = "---"
+        cell.winLostValueTv.textTable = subContainerTextTable_Value
 
-        local winLossTv = winLossContainer.addTextView()
-        winLossTv.width = textViewWidth
-        winLossTv.height = textTipHeight
-        winLossTv.marginTop = 1
+        cell.winLossTv.width = textViewWidth
+        cell.winLossTv.height = textTipHeight
+        cell.winLossTv.marginTop = 1
         --多语言
-        winLossTv.text = "Win/Loss"
-        winLossTv.textTable = subContainerTextTable_Tip
+        cell.winLossTv.text = "Win/Loss"
+        cell.winLossTv.textTable = subContainerTextTable_Tip
 
-        local killsContainer = dataContainer.addContainer()
-        killsContainer.width = dataSubContainerWidth
-        killsContainer.height = dataSubContainerHeight
-        killsContainer.alignItems = dataSubContainerAlignItems
-        killsContainer.flexDirection = dataSubContainerFlexDirection
+        cell.killsContainer.width = dataSubContainerWidth
+        cell.killsContainer.height = dataSubContainerHeight
+        cell.killsContainer.alignItems = dataSubContainerAlignItems
+        cell.killsContainer.flexDirection = dataSubContainerFlexDirection
 
-        local killsValueTv = killsContainer.addTextView()
-        killsValueTv.width = textViewWidth
-        killsValueTv.height = textValueHeight
+        cell.killsValueTv.width = textViewWidth
+        cell.killsValueTv.height = textValueHeight
         -- 最近十场最高击杀
-        killsValueTv.text = "---"
-        killsValueTv.textTable = subContainerTextTable_Value
+        cell.killsValueTv.text = "---"
+        cell.killsValueTv.textTable = subContainerTextTable_Value
 
-        local killsTv = killsContainer.addTextView()
-        killsTv.width = textViewWidth
-        killsTv.height = textTipHeight
-        killsTv.marginTop = 1
+        cell.killsTv.width = textViewWidth
+        cell.killsTv.height = textTipHeight
+        cell.killsTv.marginTop = 1
         -- 多语言
-        killsTv.text = "Kills"
-        killsTv.textTable = subContainerTextTable_Tip
+        cell.killsTv.text = "Kills"
+        cell.killsTv.textTable = subContainerTextTable_Tip
 
-        local assistsContainer = dataContainer.addContainer()
-        assistsContainer.width = dataSubContainerWidth
-        assistsContainer.height = dataSubContainerHeight
-        assistsContainer.alignItems = dataSubContainerAlignItems
-        assistsContainer.flexDirection = dataSubContainerFlexDirection
+        cell.assistsContainer.width = dataSubContainerWidth
+        cell.assistsContainer.height = dataSubContainerHeight
+        cell.assistsContainer.alignItems = dataSubContainerAlignItems
+        cell.assistsContainer.flexDirection = dataSubContainerFlexDirection
 
-        local assistsValueTv = assistsContainer.addTextView()
-        assistsValueTv.width = textViewWidth
-        assistsValueTv.height = textValueHeight
+        cell.assistsValueTv.width = textViewWidth
+        cell.assistsValueTv.height = textValueHeight
         --最近十场最高助攻数
-        assistsValueTv.text = "---"
-        assistsValueTv.textTable = subContainerTextTable_Value
+        cell.assistsValueTv.text = "---"
+        cell.assistsValueTv.textTable = subContainerTextTable_Value
 
-        local assistsTv = assistsContainer.addTextView()
-        assistsTv.width = textViewWidth
-        assistsTv.height = textTipHeight
-        assistsTv.marginTop = 1
+        cell.assistsTv.width = textViewWidth
+        cell.assistsTv.height = textTipHeight
+        cell.assistsTv.marginTop = 1
         --多语言
-        assistsTv.text = "Assists"
-        assistsTv.textTable = subContainerTextTable_Tip
+        cell.assistsTv.text = "Assists"
+        cell.assistsTv.textTable = subContainerTextTable_Tip
 
-        local ratingContainer = dataContainer.addContainer()
-        ratingContainer.width = dataSubContainerWidth
-        ratingContainer.height = dataSubContainerHeight
-        ratingContainer.alignItems = dataSubContainerAlignItems
-        ratingContainer.flexDirection = dataSubContainerFlexDirection
+        cell.ratingContainer.width = dataSubContainerWidth
+        cell.ratingContainer.height = dataSubContainerHeight
+        cell.ratingContainer.alignItems = dataSubContainerAlignItems
+        cell.ratingContainer.flexDirection = dataSubContainerFlexDirection
 
-        local ratingValueTv = ratingContainer.addTextView()
-        ratingValueTv.width = textViewWidth
-        ratingValueTv.height = textValueHeight
-        ratingValueTv.marginStart = -6
+        cell.ratingValueTv.width = textViewWidth
+        cell.ratingValueTv.height = textValueHeight
+        cell.ratingValueTv.marginStart = -6
         --综合评分
-        ratingValueTv.text = "---"
-        ratingValueTv.textTable = subContainerTextTable_Value
+        cell.ratingValueTv.text = "---"
+        cell.ratingValueTv.textTable = subContainerTextTable_Value
 
-        local ratingTv = ratingContainer.addTextView()
-        ratingTv.width = textViewWidth
-        ratingTv.height = textTipHeight
-        ratingTv.marginStart = -6
+        cell.ratingTv.width = textViewWidth
+        cell.ratingTv.height = textTipHeight
+        cell.ratingTv.marginStart = -6
         --多语言
-        ratingTv.text = "Rating"
-        ratingTv.textTable = subContainerTextTable_Tip
+        cell.ratingTv.text = "Rating"
+        cell.ratingTv.textTable = subContainerTextTable_Tip
         print("testYoga test 6")
+        cell.hasInit = true
     end
 
     listView.didSelect = function(group, column)
