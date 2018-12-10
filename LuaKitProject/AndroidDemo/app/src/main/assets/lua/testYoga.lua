@@ -1,21 +1,50 @@
-local yogaBuilder = function (container)
+local mlDataSource = {}
+local listView
+local getRankTable = function()
+    if mlDataSource ~= null then
+        if mlDataSource["MLRank"] then
+            local mlRank = cjson.decode(mlDataSource["MLRank"])
+            return mlRank
+        end
+    end
+end
 
+local observeReloadNotification = function()
+    lua_notification.createListener(function (l)
+        local listener = l
+        listener:AddObserver(3,
+                function (data)
+                    print("testNotification postNotification")
+                    if data then
+                        for k,v in pairs(data) do
+                            --mlDataSource[k] = v
+                            if listView == null then
+                                print("listView null")
+                            end
+                            listView.reload()
+                            print("testYoga test")
+                           -- print("mlDataSource" .. mlDataSource[k])
+                        end
+                    end
+                end
+        )
+    end);
+end
+
+local yogaBuilder = function(container)
     --container.backgroundColor = {r=1.0}
     container.isEnabled = true
     container.alignItems = YGAlignFlexStart
     container.flexDirection = YGFlexDirectionColumn
-
-    local listView
-
+    observeReloadNotification()
     listView = container.addListView()
 
     listView.isEnabled = true
-    listView.backgroundColor = {g=1.0}
+    listView.backgroundColor = { g = 1.0 }
     listView.width = container.width
     listView.height = container.height
     --listView.seperatorColor = {b=0.5}
-
-    listView.identifier = function (section, row)
+    listView.identifier = function(section, row)
         -- It should to use number to identify the item type
         if (row == 0)
         then
@@ -25,25 +54,27 @@ local yogaBuilder = function (container)
         end
     end
 
-    listView.numberOfGroups = function ()
+    listView.numberOfGroups = function()
         return 1
     end
 
-    listView.columnsInGroup = function (group)
+    listView.columnsInGroup = function(group)
         return 2
     end
 
-    listView.itemHeight = function (group, column)
+    listView.itemHeight = function(group, column)
         return 50
     end
 
-    listView.renderItem = function (cell, group ,column)
+    listView.renderItem = function(cell, group, column)
+        print("testYoga test 0")
         cell.isEnabled = true
-        cell.width=360
-        cell.height=180
+        cell.width = 360
+        cell.height = 180
         --cell.backgroundColor = {g=0.5, r=1.0, b=0.5}
         cell.flexDirection = YGFlexDirectionColumn
         cell.alignItems = YGAlignCenter
+        cell.backgroundColor = { a = 1.0, r = 0.114, g = 0.122, b = 0.129 }
         -- cell 重用 not init 才add，以im为key存储
         --[[
         if not cell.hasInit then
@@ -69,16 +100,21 @@ local yogaBuilder = function (container)
         backgroundIv.width = 334
         backgroundIv.height = 180
         backgroundIv.imagePath = 'tools_card_ml.png'
-        backgroundIv.marginStart = 13
 
-        local titleContainer = cell.addContainer()
+        local allContentContainer = cell.addContainer()
+        allContentContainer.width = 334
+        allContentContainer.height = 180
+        allContentContainer.marginTop = -180
+        allContentContainer.alignItems = YGAlignCenter
+        allContentContainer.flexDirection = YGFlexDirectionColumn
+
+        local titleContainer = allContentContainer.addContainer()
         titleContainer.width = 334
         titleContainer.height = 45
         titleContainer.isEnabled = true
         titleContainer.alignItems = YGAlignCenter
         titleContainer.flexDirection = YGFlexDirectionColumn
-        titleContainer.marginTop = -85
-        titleContainer.marginStart = 13
+        titleContainer.marginTop = 14
 
         local titleTv = titleContainer.addTextView()
         titleTv.width = 300
@@ -91,20 +127,26 @@ local yogaBuilder = function (container)
             color = { a = 1.0, r = 1.0, g = 1.0, b = 1.0 }
         }
 
-        local userInfoContainer = cell.addContainer()
+        local userInfoContainer = allContentContainer.addContainer()
         userInfoContainer.isEnabled = true
         userInfoContainer.width = 334
         userInfoContainer.height = 66
         userInfoContainer.alignItems = YGAlignFlexStart
         userInfoContainer.flexDirection = YGFlexDirectionRow
-        userInfoContainer.marginTop = -40
-        userInfoContainer.marginStart = 13
 
         local userAvatarIv = userInfoContainer.addImageView()
         userAvatarIv.width = 46
         userAvatarIv.height = 46
         userAvatarIv.viewCornerRadius = 23
-        userAvatarIv.imagePath = 'zz.png'
+        print("testYoga test 1")
+        if mlDataSource then
+            if mlDataSource["userIcon"] then
+                userAvatarIv.imagePath = mlDataSource["userIcon"]
+            else
+                userAvatarIv.imagePath = 'zz.png'
+            end
+        end
+        print("testYoga test 2")
         userAvatarIv.marginStart = 16
 
         local userNameContainer = userInfoContainer.addContainer()
@@ -113,12 +155,19 @@ local yogaBuilder = function (container)
         userNameContainer.alignItems = YGAlignFlexStart
         userNameContainer.flexDirection = YGFlexDirectionColumn
         userNameContainer.marginStart = 9
-        userNameContainer.marginTop = 2
+        userNameContainer.marginTop = 4
 
         local userNameTv = userNameContainer.addTextView()
         userNameTv.width = 172
         userNameTv.height = 18
-        userNameTv.text = "Gary Wu"
+        if mlDataSource then
+            if mlDataSource.nickName then
+                userNameTv.text = mlDataSource.nickName
+            else
+                userNameTv.text = "---"
+            end
+        end
+        print("testYoga test 3")
         userNameTv.textTable = {
             fontSize = 15,
             isBold = false,
@@ -137,12 +186,15 @@ local yogaBuilder = function (container)
         local nearlyStatusIv = nearlyStatusContainer.addImageView()
         nearlyStatusIv.width = 12
         nearlyStatusIv.height = 12
+        -- 读取最近上升还是下降
         nearlyStatusIv.imagePath = "stars_rise.png"
 
+        print("testYoga test 4")
         local nearlyStatusTv = nearlyStatusContainer.addTextView()
         nearlyStatusTv.width = 172
         nearlyStatusTv.height = 18
-        nearlyStatusTv.text = "Nearly status:" .. " " .. "5" .. " " .. "stars"
+        --读取最近等级状态
+        nearlyStatusTv.text = "Nearly status:" .. " " .. "-" .. " " .. "stars"
         nearlyStatusTv.textTable = {
             fontSize = 12,
             isBold = false,
@@ -150,52 +202,61 @@ local yogaBuilder = function (container)
             color = { a = 0.6, r = 1.0, g = 1.0, b = 1.0 }
         }
 
+        print("testYoga test 5")
         local rankContainer = userInfoContainer.addContainer()
         rankContainer.width = 60
         rankContainer.height = 64
-        rankContainer.marginStart = 13
+        rankContainer.marginStart = 15
         rankContainer.alignItems = YGAlignFlexStart
         rankContainer.flexDirection = YGFlexDirectionColumn
 
         local rankBgIv = rankContainer.addImageView()
         rankBgIv.width = 60
         rankBgIv.height = 52
+        -- 根据等级匹配图片
         rankBgIv.imagePath = "rank_4.png"
 
         local rankIv = rankContainer.addImageView()
         rankIv.width = 60
         rankIv.height = 52
-        rankIv.marginTop = -27
+        rankIv.marginTop = -52
+        -- 根据等级匹配图片
         rankIv.imagePath = "rank_master.png"
 
         local starsContainer = rankContainer.addContainer()
         starsContainer.width = 60
         starsContainer.height = 9
-        starsContainer.marginTop = -12
         starsContainer.alignItems = YGAlignFlexStart
         starsContainer.flexDirection = YGFlexDirectionRow
         starsContainer.justifyContent = YGJustifyCenter
 
-        local starsIv = starsContainer.addImageView()
-        starsIv.width = 9
-        starsIv.height = 9
-        starsIv.imagePath = "star.png"
+        -- 根据星星数量增加星星数量
+        --if mlRank ~= null then
+        --    local stars = mlRank["star"]
+        --    if stars ~= null and stars > 0 then
+        --        for i = 1, stars do
+        --            local starsIv = starsContainer.addImageView()
+        --            starsIv.width = 9
+        --            starsIv.height = 9
+        --            starsIv.imagePath = "star.png"
+        --        end
+        --    end
+        --end
 
-        local dataContainer = cell.addContainer()
+        local dataContainer = allContentContainer.addContainer()
         dataContainer.width = 334
-        dataContainer.height = 40
-        dataContainer.marginTop = -18
-        dataContainer.marginStart = 19
-        dataContainer.alignItems = YGAlignFlexStart
+        dataContainer.height = 44
+        dataContainer.marginTop = 6
+        dataContainer.alignItems = YGAlignCenter
         dataContainer.justifyContent = YGJustifySpaceBetween
         dataContainer.flexDirection = YGFlexDirectionRow
 
         local dataSubContainerWidth = 82
-        local dataSubContainerHeight = 40
-        local textViewWidth = 70
+        local dataSubContainerHeight = 44
+        local textViewWidth = 82
         local textValueHeight = 22
-        local textTipHeight = 14
-        local dataSubContainerAlignItems = YGAlignFlexStart
+        local textTipHeight = 16
+        local dataSubContainerAlignItems = YGAlignCenter
         local dataSubContainerFlexDirection = YGFlexDirectionColumn
         local subContainerTextTable_Value = {
             fontSize = 18,
@@ -210,93 +271,97 @@ local yogaBuilder = function (container)
             color = { a = 0.6, r = 1.0, g = 1.0, b = 1.0 }
         }
 
-        local sessionsContainer = dataContainer.addContainer()
-        sessionsContainer.width = dataSubContainerWidth
-        sessionsContainer.height = dataSubContainerHeight
-        sessionsContainer.alignItems = dataSubContainerAlignItems
-        sessionsContainer.flexDirection = dataSubContainerFlexDirection
+        local winLossContainer = dataContainer.addContainer()
+        winLossContainer.width = dataSubContainerWidth
+        winLossContainer.height = dataSubContainerHeight
+        winLossContainer.alignItems = dataSubContainerAlignItems
+        winLossContainer.flexDirection = dataSubContainerFlexDirection
 
-        local sessionsValueTv = sessionsContainer.addTextView()
-        sessionsValueTv.width = textViewWidth
-        sessionsValueTv.height = textValueHeight
-        sessionsValueTv.text = "1490"
-        sessionsValueTv.textTable = subContainerTextTable_Value
+        local winLostValueTv = winLossContainer.addTextView()
+        winLostValueTv.width = textViewWidth
+        winLostValueTv.height = textValueHeight
+        --读取最近十场胜负数
+        winLostValueTv.text = "---"
+        winLostValueTv.textTable = subContainerTextTable_Value
 
-        local sessionsTv = sessionsContainer.addTextView()
-        sessionsTv.width = textViewWidth
-        sessionsTv.height = textTipHeight
-        sessionsTv.marginTop = 1
-        sessionsTv.text = "Sessions"
-        sessionsTv.textTable = subContainerTextTable_Tip
+        local winLossTv = winLossContainer.addTextView()
+        winLossTv.width = textViewWidth
+        winLossTv.height = textTipHeight
+        winLossTv.marginTop = 1
+        --多语言
+        winLossTv.text = "Win/Loss"
+        winLossTv.textTable = subContainerTextTable_Tip
 
+        local killsContainer = dataContainer.addContainer()
+        killsContainer.width = dataSubContainerWidth
+        killsContainer.height = dataSubContainerHeight
+        killsContainer.alignItems = dataSubContainerAlignItems
+        killsContainer.flexDirection = dataSubContainerFlexDirection
 
-        local winRateContainer = dataContainer.addContainer()
-        winRateContainer.width = dataSubContainerWidth
-        winRateContainer.height = dataSubContainerHeight
-        winRateContainer.alignItems = dataSubContainerAlignItems
-        winRateContainer.flexDirection = dataSubContainerFlexDirection
+        local killsValueTv = killsContainer.addTextView()
+        killsValueTv.width = textViewWidth
+        killsValueTv.height = textValueHeight
+        -- 最近十场最高击杀
+        killsValueTv.text = "---"
+        killsValueTv.textTable = subContainerTextTable_Value
 
-        local winRateValueTv = winRateContainer.addTextView()
-        winRateValueTv.width = textViewWidth
-        winRateValueTv.height = textValueHeight
-        winRateValueTv.text = "49" .. "%"
-        winRateValueTv.textTable = subContainerTextTable_Value
+        local killsTv = killsContainer.addTextView()
+        killsTv.width = textViewWidth
+        killsTv.height = textTipHeight
+        killsTv.marginTop = 1
+        -- 多语言
+        killsTv.text = "Kills"
+        killsTv.textTable = subContainerTextTable_Tip
 
-        local winRateTv = winRateContainer.addTextView()
-        winRateTv.width = textViewWidth
-        winRateTv.height = textTipHeight
-        winRateTv.marginTop = 1
-        winRateTv.text = "Win"
-        winRateTv.textTable = subContainerTextTable_Tip
+        local assistsContainer = dataContainer.addContainer()
+        assistsContainer.width = dataSubContainerWidth
+        assistsContainer.height = dataSubContainerHeight
+        assistsContainer.alignItems = dataSubContainerAlignItems
+        assistsContainer.flexDirection = dataSubContainerFlexDirection
 
-        local mvpContainer = dataContainer.addContainer()
-        mvpContainer.width = dataSubContainerWidth
-        mvpContainer.height = dataSubContainerHeight
-        mvpContainer.alignItems = dataSubContainerAlignItems
-        mvpContainer.flexDirection = dataSubContainerFlexDirection
+        local assistsValueTv = assistsContainer.addTextView()
+        assistsValueTv.width = textViewWidth
+        assistsValueTv.height = textValueHeight
+        --最近十场最高助攻数
+        assistsValueTv.text = "---"
+        assistsValueTv.textTable = subContainerTextTable_Value
 
-        local mvpValueTv = mvpContainer.addTextView()
-        mvpValueTv.width = textViewWidth
-        mvpValueTv.height = textValueHeight
-        mvpValueTv.text = "398"
-        mvpValueTv.textTable = subContainerTextTable_Value
+        local assistsTv = assistsContainer.addTextView()
+        assistsTv.width = textViewWidth
+        assistsTv.height = textTipHeight
+        assistsTv.marginTop = 1
+        --多语言
+        assistsTv.text = "Assists"
+        assistsTv.textTable = subContainerTextTable_Tip
 
-        local mvpTv = mvpContainer.addTextView()
-        mvpTv.width = textViewWidth
-        mvpTv.height = textTipHeight
-        mvpTv.marginTop = 1
-        mvpTv.text = "MVP"
-        mvpTv.textTable = subContainerTextTable_Tip
+        local ratingContainer = dataContainer.addContainer()
+        ratingContainer.width = dataSubContainerWidth
+        ratingContainer.height = dataSubContainerHeight
+        ratingContainer.alignItems = dataSubContainerAlignItems
+        ratingContainer.flexDirection = dataSubContainerFlexDirection
 
-        local powerContainer = dataContainer.addContainer()
-        powerContainer.width = dataSubContainerWidth
-        powerContainer.height = dataSubContainerHeight
-        powerContainer.alignItems = dataSubContainerAlignItems
-        powerContainer.flexDirection = dataSubContainerFlexDirection
+        local ratingValueTv = ratingContainer.addTextView()
+        ratingValueTv.width = textViewWidth
+        ratingValueTv.height = textValueHeight
+        ratingValueTv.marginStart = -6
+        --综合评分
+        ratingValueTv.text = "---"
+        ratingValueTv.textTable = subContainerTextTable_Value
 
-        local powerValueTv = powerContainer.addTextView()
-        powerValueTv.width = textViewWidth
-        powerValueTv.height = textValueHeight
-        powerValueTv.marginStart = -6
-        powerValueTv.text = "7878"
-        powerValueTv.textTable = subContainerTextTable_Value
-
-        local powerTv = powerContainer.addTextView()
-        powerTv.width = textViewWidth
-        powerTv.height = textTipHeight
-        powerTv.marginStart = -6
-        powerTv.text = "Power"
-        powerTv.textTable = subContainerTextTable_Tip
-
+        local ratingTv = ratingContainer.addTextView()
+        ratingTv.width = textViewWidth
+        ratingTv.height = textTipHeight
+        ratingTv.marginStart = -6
+        --多语言
+        ratingTv.text = "Rating"
+        ratingTv.textTable = subContainerTextTable_Tip
+        print("testYoga test 6")
     end
 
-    listView.didSelect = function (group ,column)
+    listView.didSelect = function(group, column)
         listView.reload()
-        print('didSelect '..group.."-"..column)
+        print('didSelect ' .. group .. "-" .. column)
     end
-
-
-
 end
 
 return yogaBuilder

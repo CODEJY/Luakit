@@ -60,6 +60,7 @@ public class YogaListViewAdapter extends RecyclerView.Adapter<YogaListViewAdapte
 
     @Override
     public int getItemViewType(int position) {
+        LogUtil.i(TAG, "getItemViewType -> " + "mytest");
         String identifier = yogaLayoutHelper.getItemViewType(listViewSelf, listViewRoot, position);
         LogUtil.i(TAG, "getItemViewType -> " + identifier);
         // TODO : refer to the function getIdentifier() in luaYoga/LuaTableView.mm

@@ -116,6 +116,7 @@ public class YogaListView extends RecyclerView implements IYoga {
     }
 
     private void notifyDataSetChanged() {
+        LogUtil.i("listReload", "android listReload");
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }

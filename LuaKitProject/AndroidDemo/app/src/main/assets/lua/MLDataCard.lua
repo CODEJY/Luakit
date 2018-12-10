@@ -4,19 +4,53 @@
 --- DateTime: 2018/12/5 7:51 PM
 ---
 local TAG = "MLDataCard"
+local fadeData = "{\"code\":0,\"msg\":\"test\",\"responseData\":\"{\"matchList\":[],\"userInfo\":{\"gameUid\":326890862,\"userIcon\":\"103\",\"rise\":1,\"score\":2.0,\"rating\":\"B\",\"nickName\":\"Agez Helen\",\"level\":4,\"heroCount\":3,\"heroSkinCount\":0,\"matchCount\":1,\"heartCount\":0,\"pickCount\":0,\"markLevel\":0,\"highestRank\":{\"rank\":\"warrior\",\"img\":\"https://dianhu-1253537286.cos.eu-moscow.myqcloud.com/mobileLegend/rankImage/warrior.png\",\"level\":3,\"star\":3},\"nowRank\":{\"rank\":\"warrior\",\"img\":\"https://dianhu-1253537286.cos.eu-moscow.myqcloud.com/mobileLegend/rankImage/warrior.png\",\"level\":3,\"star\":3},\"currentSeason\":{\"seasonId\":\"0:0\",\"model\":0,\"matchCount\":0,\"winRate\":0.0,\"mvpCount\":0,\"mvpLostCount\":0,\"legendary\":0,\"pentaKill\":0,\"quadraKill\":0,\"tripleKill\":0,\"doubleKill\":0,\"firstBlood\":0,\"highestKill\":0,\"highestAssist\":0,\"highestWinningStreak\":0,\"highestDamagePerMin\":0,\"highestSufferPerMin\":0,\"highestGoldPerMin\":0,\"damage\":0.0,\"farm\":0.0,\"boost\":0.0,\"kda\":0.0,\"survival\":0.0,\"teamFight\":0.0},\"totalSeason\":{\"seasonId\":\"0:0\",\"model\":0,\"matchCount\":0,\"winRate\":0.0,\"mvpCount\":0,\"mvpLostCount\":0,\"legendary\":0,\"pentaKill\":0,\"quadraKill\":0,\"tripleKill\":0,\"doubleKill\":0,\"firstBlood\":0,\"highestKill\":0,\"highestAssist\":0,\"highestWinningStreak\":0,\"highestDamagePerMin\":0,\"highestSufferPerMin\":0,\"highestGoldPerMin\":0,\"damage\":0.0,\"farm\":0.0,\"boost\":0.0,\"kda\":0.0,\"survival\":0.0,\"teamFight\":0.0},\"commonlyUsedHero\":[{\"id\":\"18\",\"name\":\"akai\",\"photoUrl\":\"https://dianhu-1253537286.cos.eu-moscow.myqcloud.com/mobileLegend/heroImage/akai.jpg\",\"iconUrl\":\"https://dianhu-1253537286.cos.eu-moscow.myqcloud.com/mobileLegend/heroIcon/akai.jpg\",\"matchCount\":1,\"winCount\":1,\"winRate\":100.0,\"mvpCount\":0,\"pantaKill\":0,\"legendary\":0,\"score\":0.0,\"damagePerMin\":0,\"sufferPerMin\":0,\"assistKing\":0}],\"shard\":38}}\"}"
+--local fadeData = "{\"highestRank\":{\"rank\":\"warrior\",\"img\":\"eee\",\"level\":3,\"star\":3}}"
 local mlDataSource = {}
+local rankBgList = { "rank_1.png", "rank_2.png", "rank_3.png", "rank_4.png", "rank_5.png" }
+local getDataFromNet = function()
+    --print(TAG .. " getDataFromNet " .. fadeData)
+    local allData = cjson.decode(fadeData)
+    if allData ~= null then
+        print(TAG .. " null")
+    end
+    print(TAG .. "test")
+    for i, v in pairs(allData) do
+        print(TAG .. "key: " .. i)
+    end
+    --print(TAG .. " userInfo: " .. allData["userInfo"])
+    --if allData["userInfo"] then
+    --    mlDataSource = cjson.decode(allData["userInfo"])
+    --end
+end
 
-local getRankTable = function()
+local getDataFromDb = function()
+
+end
+
+local getNowRankTable = function()
     if mlDataSource ~= null then
-        if mlDataSource["MLRank"] then
+        if mlDataSource["nowRank"] then
             local mlRank = cjson.decode(mlDataSource["MLRank"])
             return mlRank
         end
     end
 end
 
+local getTotalSeasonTable = function()
+    if mlDataSource then
+        if mlDataSource["totalSeason"] then
+            local mlTotalSeason = cjson.decode(mlDataSource["totalSeason"])
+            return mlTotalSeason
+        end
+    end
+end
+
 local yogaBuilder = function(container)
-    local mlRank = getRankTable()
+    getDataFromNet()
+    local nowRank = getNowRankTable()
+    local totalSeason = getTotalSeasonTable()
+    print(TAG .. " test " .. "1")
     container.isEnabled = true
     container.alignItems = YGAlignCenter
     container.flexDirection = YGFlexDirectionColumn --垂直布局
@@ -61,6 +95,7 @@ local yogaBuilder = function(container)
     userInfoContainer.alignItems = YGAlignFlexStart
     userInfoContainer.flexDirection = YGFlexDirectionRow
 
+    print(TAG .. " test " .. "2")
     local userAvatarIv = userInfoContainer.addImageView()
     userAvatarIv.width = 46
     userAvatarIv.height = 46
@@ -72,6 +107,7 @@ local yogaBuilder = function(container)
     end
     userAvatarIv.marginStart = 16
 
+    print(TAG .. " test " .. "3")
     local userNameContainer = userInfoContainer.addContainer()
     userNameContainer.width = 172
     userNameContainer.height = 36
@@ -80,6 +116,7 @@ local yogaBuilder = function(container)
     userNameContainer.marginStart = 9
     userNameContainer.marginTop = 4
 
+    print(TAG .. " test " .. "4")
     local userNameTv = userNameContainer.addTextView()
     userNameTv.width = 172
     userNameTv.height = 18
@@ -103,6 +140,7 @@ local yogaBuilder = function(container)
     nearlyStatusContainer.alignItems = YGAlignCenter
     nearlyStatusContainer.flexDirection = YGFlexDirectionRow
 
+    print(TAG .. " test " .. "5")
     local nearlyStatusIv = nearlyStatusContainer.addImageView()
     nearlyStatusIv.width = 12
     nearlyStatusIv.height = 12
@@ -113,7 +151,13 @@ local yogaBuilder = function(container)
     nearlyStatusTv.width = 172
     nearlyStatusTv.height = 18
     --读取最近等级状态
-    nearlyStatusTv.text = "Nearly status:" .. " " .. "5" .. " " .. "stars"
+    local recentStars = mlDataSource["rise"]
+    if recentStars then
+        nearlyStatusTv.text = "Nearly status:" .. " " .. recentStars .. " " .. "stars"
+    else
+        nearlyStatusTv.text = "Nearly status:" .. " " .. "-" .. " " .. "stars"
+    end
+
     nearlyStatusTv.textTable = {
         fontSize = 12,
         isBold = false,
@@ -121,6 +165,7 @@ local yogaBuilder = function(container)
         color = { a = 0.6, r = 1.0, g = 1.0, b = 1.0 }
     }
 
+    print(TAG .. " test " .. "6")
     local rankContainer = userInfoContainer.addContainer()
     rankContainer.width = 60
     rankContainer.height = 64
@@ -132,15 +177,29 @@ local yogaBuilder = function(container)
     rankBgIv.width = 60
     rankBgIv.height = 52
     -- 根据等级匹配图片
-    rankBgIv.imagePath = "rank_4.png"
+    local rankLevel = mlDataSource["level"]
+    if rankLevel then
+        rankBgIv.imagePath = rankBgList[rankLevel]
+    else
+        rankBgIv.imagePath = "rank_3.png"
+    end
+    print(TAG .. " test " .. "7")
 
     local rankIv = rankContainer.addImageView()
     rankIv.width = 60
     rankIv.height = 52
     rankIv.marginTop = -52
     -- 根据等级匹配图片
-    rankIv.imagePath = "rank_master.png"
+    if nowRank then
+        local rankImgPath = nowRank["img"]
+        if rankImgPath then
+            rankIv.imagePath = rankImgPath
+        else
+            rankIv.imagePath = "rank_warrior.png"
+        end
+    end
 
+    print(TAG .. " test " .. "8")
     local starsContainer = rankContainer.addContainer()
     starsContainer.width = 60
     starsContainer.height = 9
@@ -149,8 +208,8 @@ local yogaBuilder = function(container)
     starsContainer.justifyContent = YGJustifyCenter
 
     -- 根据星星数量增加星星数量
-    if mlRank ~= null then
-        local stars = mlRank["star"]
+    if nowRank then
+        local stars = nowRank["star"]
         if stars ~= null and stars > 0 then
             for i = 1, stars do
                 local starsIv = starsContainer.addImageView()
@@ -161,7 +220,7 @@ local yogaBuilder = function(container)
         end
     end
 
-
+    print(TAG .. " test " .. "9")
     local dataContainer = allContentContainer.addContainer()
     dataContainer.width = 334
     dataContainer.height = 44
@@ -220,8 +279,12 @@ local yogaBuilder = function(container)
     local killsValueTv = killsContainer.addTextView()
     killsValueTv.width = textViewWidth
     killsValueTv.height = textValueHeight
-    -- 最近十场最高击杀
-    killsValueTv.text = "---"
+    -- 最高击杀
+    if totalSeason then
+        killsValueTv.text = totalSeason["highestKill"]
+    else
+        killsValueTv.text = "---"
+    end
     killsValueTv.textTable = subContainerTextTable_Value
 
     local killsTv = killsContainer.addTextView()
@@ -241,8 +304,12 @@ local yogaBuilder = function(container)
     local assistsValueTv = assistsContainer.addTextView()
     assistsValueTv.width = textViewWidth
     assistsValueTv.height = textValueHeight
-    --最近十场最高助攻数
-    assistsValueTv.text = "---"
+    --最高助攻数
+    if totalSeason then
+        assistsValueTv.text = totalSeason["highestAssist"]
+    else
+        assistsValueTv.text = "---"
+    end
     assistsValueTv.textTable = subContainerTextTable_Value
 
     local assistsTv = assistsContainer.addTextView()
@@ -264,7 +331,12 @@ local yogaBuilder = function(container)
     ratingValueTv.height = textValueHeight
     ratingValueTv.marginStart = -6
     --综合评分
-    ratingValueTv.text = "---"
+    local rating = mlDataSource["rating"]
+    if rating then
+        ratingValueTv.text = rating
+    else
+        ratingValueTv.text = "---"
+    end
     ratingValueTv.textTable = subContainerTextTable_Value
 
     local ratingTv = ratingContainer.addTextView()
