@@ -178,7 +178,7 @@ void setImageViewContentMode(void * imageView, float contentModeType) {
     jclass jhostViewClass = env->GetObjectClass(jhostView);
     jmethodID jmid = env->GetMethodID(jhostViewClass, "nativeSetScaleType", "(F)V");
     if (jmid == NULL) {
-        LOGD("Failed, The method setImageViewContentMode is not found");
+        LOGD("Failed, The method nativeSetScaleType is not found");
         return;
     }
     env->CallVoidMethod(jhostView, jmid, (jfloat)contentModeType);
@@ -191,7 +191,7 @@ void setViewCornerRadius(void *view, float cornerRadius)
     jclass jhostViewClass = env->GetObjectClass(jhostView);
     jmethodID jmid = env->GetMethodID(jhostViewClass, "nativeSetImageRadius", "(F)V");
     if (jmid == NULL) {
-        LOGD("Failed, The method nativeListReload is not found");
+        LOGD("Failed, The method nativeSetImageRadius is not found");
         return;
     }
     env->CallVoidMethod(jhostView, jmid, (jfloat)cornerRadius);
@@ -295,7 +295,7 @@ void setTextHighlightedColor(void * textView,  std::vector<float> color)
     LOGD("Text setHighlighted Color size: %d", color.size());
     jmethodID jmid = env->GetMethodID(jhostViewClass, "nativeSetTextHighlightedColor", "(FFFF)V");
     if (jmid == NULL) {
-        LOGD("Failed!! method setTextHighlightedColor not found");
+        LOGD("Failed!! method nativeSetTextHighlightedColor not found");
         return;
     }
     if (color.size() == 4) {
@@ -323,8 +323,41 @@ void setTextNumberOfLines(void *view, float numberOfLines) {
     jmethodID jmid = env->GetMethodID(jhostViewClass, "nativeSetTextNumberOfLines", "(F)V");
     if (jmid == NULL) {
         LOGD("Failed!! method nativeSetTextNumberOfLines not found");
-        return;
+        return -1;
     }
     env->CallVoidMethod(jhostView, jmid, (jfloat)numberOfLines);
 }
 
+float heightForTextTable(std::string text,float textWidth,float textFontSize,std::string fontName) {
+    JniEnvWrapper env;
+    jclass clazz = env->FindClass("com/common/luakit/utils/TextViewUtils");
+    if (clazz == NULL) {
+        LOGD("Failed!! Class TextViewUtils not found");
+        return -1;
+    }
+    jstring jtext = env->NewStringUTF(text.c_str());
+    jstring jfontName = env->NewStringUTF(fontName.c_str());
+    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorHeightOfTextView", "(Ljavalang/String;FFLjava/lang/String;)F");
+    if (jmid == NULL) {
+        LOGD("Failed!! Method calculatorHeightOfTextView not found");
+        return -1;
+    }
+    return (jfloat)env->CallStaticBooleanMethod(clazz, jmid, jtext, (jfloat)textWidth, (jfloat)textFontSize, jfontName);
+}
+
+float widthForTextTable(std::string text,float textHeight,float textFontSize,std::string fontName) {
+    JniEnvWrapper env;
+    jclass clazz = env->FindClass("com/common/luakit/utils/TextViewUtils");
+    if (clazz == NULL) {
+        LOGD("Failed!! Class TextViewUtils not found");
+        return -1;
+    }
+    jstring jtext = env->NewStringUTF(text.c_str());
+    jstring jfontName = env->NewStringUTF(fontName.c_str());
+    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorWidthOfTextView", "(Ljavalang/String;FFLjava/lang/String;)F");
+    if (jmid == NULL) {
+        LOGD("Failed!! Method calculatorWidthOfTextView not found");
+        return -1;
+    }
+    return (jfloat)env->CallStaticBooleanMethod(clazz, jmid, jtext, (jfloat)textHeight, (jfloat)textFontSize, jfontName);
+}
