@@ -78,14 +78,11 @@ local yogaBuilder = function(container)
 
         -- cell 重用 not init 才add，以im为key存储
         if not cell.hasInit then
-            print("11111111111111111111")
             cell.backgroundIv = cell.addImageView()
             cell.allContentContainer = cell.addContainer()
-            print("2222222222222222222222")
             cell.titleContainer = cell.allContentContainer.addContainer()
             cell.titleTv = cell.titleContainer.addTextView()
             cell.userInfoContainer = cell.allContentContainer.addContainer()
-            print("3333333333333")
             cell.userAvatarIv = cell.userInfoContainer.addImageView()
             cell.userNameContainer = cell.userInfoContainer.addContainer()
             cell.userNameTv = cell.userInfoContainer.addTextView()
@@ -93,7 +90,6 @@ local yogaBuilder = function(container)
             cell.nearlyStatusIv = cell.nearlyStatusContainer.addImageView()
             cell.nearlyStatusTv = cell.nearlyStatusContainer.addTextView()
             cell.rankContainer = cell.userInfoContainer.addContainer()
-            print("4444444444")
             cell.rankBgIv = cell.rankContainer.addImageView()
             cell.rankIv = cell.rankContainer.addImageView()
             cell.dataContainer = cell.allContentContainer.addContainer()
@@ -111,7 +107,6 @@ local yogaBuilder = function(container)
             cell.ratingContainer = cell.dataContainer.addContainer()
             cell.ratingValueTv = cell.ratingContainer.addTextView()
             cell.ratingTv = cell.ratingContainer.addTextView()
-            print("555555")
         end
 
         cell.backgroundIv.isEnabled = true
@@ -141,7 +136,6 @@ local yogaBuilder = function(container)
             alignment = TextAlignmentCenter,
             color = { a = 1.0, r = 1.0, g = 1.0, b = 1.0 }
         }
-        print("33333333333333333")
         cell.userInfoContainer.isEnabled = true
         cell.userInfoContainer.width = 334
         cell.userInfoContainer.height = 66

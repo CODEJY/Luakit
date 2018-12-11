@@ -156,28 +156,22 @@ JNIEXPORT jobject JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_onBin
     java_weak_ref *view = (java_weak_ref *)contentView;
     LOGD("The view is %d", view);
     lua_State * state = BusinessThread::GetCurrentThreadLuaState();
-    LOGD("1111111111");
     BEGIN_STACK_MODIFY(state);
     pushUserdataInStrongTable(state,(void *)rootView);
-    LOGD("222222222");
     assert(lua_type(state, -1) == LUA_TTABLE);
     lua_pushlightuserdata(state, (void *)hostView);
     lua_rawget(state, -2);
     assert(lua_type(state, -1) == LUA_TUSERDATA);
     if(lua_type(state, -1) == LUA_TUSERDATA) {
-        LOGD("333333333333");
         lua_getfield(state, -1, List_RenderItem);
         if (lua_type(state, -1) == LUA_TFUNCTION) {
-            LOGD("444444444444");
             pushStrongUserdataTable(state);
             lua_pushlightuserdata(state, (void *)view);
             lua_rawget(state, -2);
-            LOGD("55555555555");
             lua_pushlightuserdata(state, (void *)view);
             lua_rawget(state, -2);
             lua_remove(state, -2);
             lua_remove(state, -2);
-            LOGD("6666666666666666");
             lua_pushinteger(state, 0);
             lua_pushinteger(state, position);
             lua_pcall(state, 3, 0, 0);
