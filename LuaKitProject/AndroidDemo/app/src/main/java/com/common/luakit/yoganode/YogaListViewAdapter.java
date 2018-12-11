@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.common.luakit.YogaView;
-import com.demo.luayoga.yy.androiddemo.utils.LogUtil;
+import com.common.luakit.utils.LogUtil;
 
 public class YogaListViewAdapter extends RecyclerView.Adapter<YogaListViewAdapter.YogaViewHolder> {
 
@@ -35,30 +35,31 @@ public class YogaListViewAdapter extends RecyclerView.Adapter<YogaListViewAdapte
     public YogaViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LogUtil.i(TAG, "onCreateViewHolder");
         YogaView content = new YogaView(context);
-        LogUtil.i(TAG, "------>>>set content " + content);
         yogaLayoutHelper.onCreateView(listViewSelf, listViewRoot, content);
         // viewGroup.addView(content, null);
         return new YogaViewHolder(content);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull YogaViewHolder viewHolder, int position) {
-        // TODO : YogaListView.reload()? how to trigger.
+    public void onBindViewHolder(@NonNull final YogaViewHolder viewHolder, final int position) {
         LogUtil.i(TAG, "onBindViewHolder");
         YogaView content = ((YogaView) viewHolder.itemView);
-        LogUtil.i(TAG, "<<<<<<--------- get content " + content);
-        LogUtil.i(TAG, "listViewSelf : " + listViewSelf);
-        LogUtil.i(TAG, "listViewRoot : " + listViewRoot);
-        LogUtil.i(TAG, "contentSelf : " + content.getSelfPointer());
-        LogUtil.i(TAG, "position : " + position);
         yogaLayoutHelper.onBindView(listViewSelf, listViewRoot, content.getSelfPointer(), position);
         content.calculateLayout();
         yogaLayoutHelper.inflate(content);
+        content.setEnabled(true);
+        content.setClickable(true);
+        content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.i(TAG, "Click the plugin list item.");
+                yogaLayoutHelper.onItemClick(listViewSelf, listViewRoot, viewHolder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        // TODO : refer to the function numberOfRowsInSection() in luaYoga/LuaTableView.mm
         int itemCount = yogaLayoutHelper.getItemcount(0, listViewSelf, listViewRoot);
         LogUtil.i(TAG, "getItemCount : " + itemCount);
         return itemCount;
@@ -69,7 +70,6 @@ public class YogaListViewAdapter extends RecyclerView.Adapter<YogaListViewAdapte
         LogUtil.i(TAG, "getItemViewType -> " + "mytest");
         String identifier = yogaLayoutHelper.getItemViewType(listViewSelf, listViewRoot, position);
         LogUtil.i(TAG, "getItemViewType -> " + identifier);
-        // TODO : refer to the function getIdentifier() in luaYoga/LuaTableView.mm
         int type;
         switch (identifier) {
             case "test":

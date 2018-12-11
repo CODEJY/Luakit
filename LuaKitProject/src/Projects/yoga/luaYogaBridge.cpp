@@ -368,14 +368,14 @@ void showToast(std::string toastContent) {
 
 void goFlutter(std::string moduleName, std::string pluginVersion) {
     JniEnvWrapper env;
-    jclass clazz = env->FindClass("com/common/luakit/utils/IntentUtils");
+    jclass clazz = env->FindClass("com/common/luakit/utils/PluginUtils");
     if (clazz == NULL) {
         LOGD("Failed!! Class IntentUtils not found");
         return;
     }
     jstring jmoduleName = env->NewStringUTF(moduleName.c_str());
     jstring jpluginVersion = env->NewStringUTF(pluginVersion.c_str());
-    jmethodID jmid = env->GetStaticMethodID(clazz, "goFlutter", "(Ljavalang/String;Ljava/lang/String;)V");
+    jmethodID jmid = env->GetStaticMethodID(clazz, "goFlutter", "(Ljava/lang/String;Ljava/lang/String;)V");
     if (jmid == NULL) {
         LOGD("Failed!! Method goFlutter not found");
         return;

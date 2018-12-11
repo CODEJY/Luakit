@@ -347,8 +347,14 @@ local yogaBuilder = function(container)
     end
 
     listView.didSelect = function(group, column)
-        listView.reload()
-        print('didSelect ' .. group .. "-" .. column)
+        print('LuaYogaDemo_didSelect ' .. group .. "-" .. column)
+        if column == 0 then
+            local moduleName = "record_search"
+            local moduleVersion = ""
+            goFlutter(moduleName, moduleVersion)
+        else
+            goFlutter("", "") --TODO
+        end
     end
 end
 

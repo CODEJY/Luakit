@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,7 +21,7 @@ import com.common.luakit.yoganode.YogaNodeWrapper;
 import com.common.luakit.yoganode.YogaOther;
 import com.common.luakit.yoganode.YogaScrollView;
 import com.common.luakit.yoganode.YogaTextView;
-import com.demo.luayoga.yy.androiddemo.utils.LogUtil;
+import com.common.luakit.utils.LogUtil;
 import com.facebook.yoga.YogaNode;
 
 public class YogaView extends FrameLayout implements IYoga {
@@ -110,6 +109,7 @@ public class YogaView extends FrameLayout implements IYoga {
         LogUtil.i(TAG, "setYogaProperty -> propertyName: " + propertyName + ", value: " + value);
         if (PropertyType.YOGA_IS_ENABLE.equals(propertyName)) {
             boolean enabled = value == 1.0f;
+            LogUtil.i(TAG, "Enabled  = " + enabled);
             setEnabled(enabled);
             setClickable(enabled);
             return true;

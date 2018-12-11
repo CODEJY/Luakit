@@ -9,8 +9,7 @@ import android.widget.FrameLayout;
 
 import com.common.luakit.constant.PropertyType;
 import com.common.luakit.utils.DimensUtils;
-import com.demo.luayoga.yy.androiddemo.utils.LogUtil;
-import com.facebook.yoga.YogaEdge;
+import com.common.luakit.utils.LogUtil;
 import com.facebook.yoga.YogaNode;
 
 import java.io.InputStream;

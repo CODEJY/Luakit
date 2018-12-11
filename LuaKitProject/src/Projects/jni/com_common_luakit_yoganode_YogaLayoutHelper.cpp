@@ -172,7 +172,7 @@ JNIEXPORT jobject JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_onBin
             lua_rawget(state, -2);
             lua_remove(state, -2);
             lua_remove(state, -2);
-            lua_pushinteger(state, 0);
+            lua_pushinteger(state, 0); // TODO : use real group
             lua_pushinteger(state, position);
             lua_pcall(state, 3, 0, 0);
         } else {
@@ -185,3 +185,28 @@ JNIEXPORT jobject JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_onBin
     }
     END_STACK_MODIFY(state, 0)
 }
+
+JNIEXPORT jobject JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_onItemClick
+  (JNIEnv *env, jobject thiz, jlong hostView, jlong rootView, jint position) {
+    LOGD("Java_com_common_luakit_yoganode_YogaLayoutHelper_onItemClick");
+    lua_State * state = BusinessThread::GetCurrentThreadLuaState();
+    BEGIN_STACK_MODIFY(state);
+    assert(rootView != 0);
+    pushUserdataInStrongTable(state,(void *)rootView);
+    assert(lua_type(state, -1) == LUA_TTABLE);
+    lua_pushlightuserdata(state, (void *)hostView);
+    lua_rawget(state, -2);
+    assert(lua_type(state, -1) == LUA_TUSERDATA);
+    if(lua_type(state, -1) == LUA_TUSERDATA){
+        lua_getfield(state, -1, List_DidSelect);
+        if (lua_type(state, -1) == LUA_TFUNCTION) {
+            lua_pushinteger(state, 0);// TODO : use real group
+            lua_pushinteger(state, (int)position);
+            lua_pcall(state, 2, 0, 0);
+        }
+    } else {
+        LOGD("tableView onItemClick no userdata");
+        assert(false);
+    }
+    END_STACK_MODIFY(state, 0)
+  }
