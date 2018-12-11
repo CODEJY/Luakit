@@ -148,8 +148,8 @@ public class YogaFrameLayout extends FrameLayout implements IYoga {
         if (hasInflate) {
             for (int i = 0; i < yogaNode.getChildCount(); i++) {
                 yogaNodeWrapper.getChildView(i).inflate();
-                return;
             }
+            return;
         }
         for (int i = 0; i < yogaNode.getChildCount(); i++) {
             yogaNodeWrapper.getChildView(i).inflate();

@@ -37,7 +37,7 @@ public class YogaListViewAdapter extends RecyclerView.Adapter<YogaListViewAdapte
         YogaView content = new YogaView(context);
         LogUtil.i(TAG, "------>>>set content " + content);
         yogaLayoutHelper.onCreateView(listViewSelf, listViewRoot, content);
-        // viewGroup.addView(content);
+        // viewGroup.addView(content, null);
         return new YogaViewHolder(content);
     }
 

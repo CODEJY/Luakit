@@ -49,7 +49,12 @@ public class MainActivity extends AppCompatActivity {
             yogaLayoutHelper.inflate(yogaView);
             hasLoadLua = true;
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        yogaLayoutHelper.releaseNativeMemory();
+        super.onDestroy();
     }
 
     private void initView() {

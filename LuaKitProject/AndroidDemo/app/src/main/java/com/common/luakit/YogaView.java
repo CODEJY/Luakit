@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -249,10 +250,9 @@ public class YogaView extends FrameLayout implements IYoga {
         setBackgroundColor(Color.argb((int) (255 * a), (int) (255 * r), (int) (255 * g), (int) (255 * b)));
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        // important! Release the native memory.
-        // dispose(self);
+    public void releaseNativeMemory() {
+        LogUtil.i(TAG, "releaseNativeMemory");
+        dispose(self);
     }
+
 }
