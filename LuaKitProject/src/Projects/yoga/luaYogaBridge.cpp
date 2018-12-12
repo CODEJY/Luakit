@@ -73,6 +73,7 @@ float getYogaProperty(void * view, YogaType type, std::string propertyName) {
         return false;
     }
     jfloat value = (jfloat)env->CallFloatMethod(jhostView, mid, (jint)viewType, jpropertyName);
+    env->DeleteLocalRef(jpropertyName);
     return (float)value; 
 }
 
@@ -121,6 +122,7 @@ bool setYogaProperty(void * view, YogaType type, std::string propertyName, float
         return false;
     }
     jboolean success = (jboolean)env->CallBooleanMethod(jhostView, mid, (jint)viewType, jpropertyName, (jfloat)value);
+    env->DeleteLocalRef(jpropertyName);
     return (bool)success; 
 }
 
