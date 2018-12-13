@@ -344,7 +344,7 @@ float heightForTextTable(std::string text,float textWidth,float textFontSize,std
         LOGD("Failed!! Method calculatorHeightOfTextView not found");
         return -1;
     }
-    return (jfloat)env->CallStaticBooleanMethod(clazz, jmid, jtext, (jfloat)textWidth, (jfloat)textFontSize, jfontName);
+    return (jfloat)env->CallStaticFloatMethod(clazz, jmid, jtext, (jfloat)textWidth, (jfloat)textFontSize, jfontName);
 }
 
 float widthForTextTable(std::string text,float textHeight,float textFontSize,std::string fontName) {
@@ -361,7 +361,7 @@ float widthForTextTable(std::string text,float textHeight,float textFontSize,std
         LOGD("Failed!! Method calculatorWidthOfTextView not found");
         return -1;
     }
-    return (jfloat)env->CallStaticBooleanMethod(clazz, jmid, jtext, (jfloat)textHeight, (jfloat)textFontSize, jfontName);
+    return (jfloat)env->CallStaticFloatMethod(clazz, jmid, jtext, (jfloat)textHeight, (jfloat)textFontSize, jfontName);
 }
 
 void showToast(std::string toastContent) {
