@@ -20,6 +20,11 @@
 --     ROMANIAN,
 --     BULGARIAN,
 --     BELARUSIAN,
+--     PORTUGUESE_BRASIL,
+--     BURMESE,
+--     INDONESIAN,
+--     HINDI,
+--     MALAY,
 -- };
 
 local languagesTable = {
@@ -44,6 +49,11 @@ local languagesTable = {
     "ro",
     "bg",
     "be",
+    "pt-BR",
+    "my",
+    "id",
+    "hi",
+    "ms",
 }
 
 local languageCode = lua_language.getLanguageType()
