@@ -339,7 +339,7 @@ float heightForTextTable(std::string text,float textWidth,float textFontSize,std
     }
     jstring jtext = env->NewStringUTF(text.c_str());
     jstring jfontName = env->NewStringUTF(fontName.c_str());
-    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorHeightOfTextView", "(Ljavalang/String;FFLjava/lang/String;)F");
+    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorHeightOfTextView", "(Ljava/lang/String;FFLjava/lang/String;)F");
     if (jmid == NULL) {
         LOGD("Failed!! Method calculatorHeightOfTextView not found");
         return -1;
@@ -356,7 +356,7 @@ float widthForTextTable(std::string text,float textHeight,float textFontSize,std
     }
     jstring jtext = env->NewStringUTF(text.c_str());
     jstring jfontName = env->NewStringUTF(fontName.c_str());
-    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorWidthOfTextView", "(Ljavalang/String;FFLjava/lang/String;)F");
+    jmethodID jmid = env->GetStaticMethodID(clazz, "calculatorWidthOfTextView", "(Ljava/lang/String;FFLjava/lang/String;)F");
     if (jmid == NULL) {
         LOGD("Failed!! Method calculatorWidthOfTextView not found");
         return -1;
