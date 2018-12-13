@@ -12,7 +12,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#define TAG    "LuaYogaDemo-jni" 
+#define TAG    "LuaYoga-jni" 
 #define LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
 
 JNIEXPORT jint JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_getItemcount 

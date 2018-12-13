@@ -7,7 +7,7 @@
 
 #define INVALID_VIEW_TYPE -1
 
-#define TAG    "LuaYogaDemo-jni" 
+#define TAG    "LuaYoga-jni" 
 #define LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
 
 void setPointer(void * self, void * parentView, void * root) {

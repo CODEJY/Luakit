@@ -11,7 +11,7 @@ extern "C" {
 #include "lua.h"
 #include "lauxlib.h"
 
-#define TAG    "LuaYogaDemo-jni" 
+#define TAG    "LuaYoga-jni" 
 #define LOGD(...)  __android_log_print(ANDROID_LOG_INFO,TAG,__VA_ARGS__)
 
 
