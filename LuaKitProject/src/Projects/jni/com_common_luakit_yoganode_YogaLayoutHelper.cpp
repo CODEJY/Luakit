@@ -192,27 +192,16 @@ JNIEXPORT jobject JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_onIte
     lua_State * state = BusinessThread::GetCurrentThreadLuaState();
     BEGIN_STACK_MODIFY(state);
     assert(rootView != 0);
-    LOGD("1111111111111111111");
     pushUserdataInStrongTable(state,(void *)rootView);
-    LOGD("22222222222222222222");
     assert(lua_type(state, -1) == LUA_TTABLE);
-    LOGD("33333333333333333333");
     lua_pushlightuserdata(state, (void *)hostView);
-    LOGD("44444444444444444444");
     lua_rawget(state, -2);
-    LOGD("55555555555555555555");
     assert(lua_type(state, -1) == LUA_TUSERDATA);
-    LOGD("666666666666666666666");
     if(lua_type(state, -1) == LUA_TUSERDATA){
-        LOGD("777777777777777777");
         lua_getfield(state, -1, List_DidSelect);
-        LOGD("8888888888888888888");
         if (lua_type(state, -1) == LUA_TFUNCTION) {
-            LOGD("99999999999999999999");
             lua_pushinteger(state, 0);// TODO : use real group
-            LOGD("00000000000000000000");
             lua_pushinteger(state, (int)position);
-            LOGD("@@@@@@@@@@@@@@@@@@@@@@@");
             lua_pcall(state, 2, 0, 0);
         }
     } else {
