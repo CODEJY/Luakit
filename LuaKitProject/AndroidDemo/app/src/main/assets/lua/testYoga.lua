@@ -351,9 +351,10 @@ local yogaBuilder = function(container)
         if column == 0 then
             local moduleName = "record_search"
             local moduleVersion = ""
-            goFlutter(moduleName, moduleVersion)
+            local type = "flutter"
+            goFlutter(moduleName, moduleVersion, type)
         else
-            goFlutter("", "") --TODO
+            goFlutter("", "", "") --TODO
         end
     end
 end

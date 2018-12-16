@@ -368,7 +368,7 @@ void showToast(std::string toastContent) {
     
 }
 
-void goFlutter(std::string moduleName, std::string pluginVersion) {
+void goFlutter(std::string moduleName, std::string pluginVersion, std::string type) {
     JniEnvWrapper env;
     jclass clazz = env->FindClass("com/common/luakit/utils/PluginUtils");
     if (clazz == NULL) {
@@ -377,10 +377,11 @@ void goFlutter(std::string moduleName, std::string pluginVersion) {
     }
     jstring jmoduleName = env->NewStringUTF(moduleName.c_str());
     jstring jpluginVersion = env->NewStringUTF(pluginVersion.c_str());
-    jmethodID jmid = env->GetStaticMethodID(clazz, "goFlutter", "(Ljava/lang/String;Ljava/lang/String;)V");
+    jstring jtype = env->NewStringUTF(type.c_str());
+    jmethodID jmid = env->GetStaticMethodID(clazz, "goFlutter", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
     if (jmid == NULL) {
         LOGD("Failed!! Method goFlutter not found");
         return;
     }
-    env->CallStaticVoidMethod(clazz, jmid, jmoduleName, jpluginVersion);
+    env->CallStaticVoidMethod(clazz, jmid, jmoduleName, jpluginVersion, jtype);
 }

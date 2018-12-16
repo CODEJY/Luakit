@@ -70,4 +70,4 @@ float widthForTextTable(std::string text,float textHeight,float textFontSize,std
 
 void showToast(std::string toastContent);
 
-void goFlutter(std::string moduleName, std::string pluginVersion);
+void goFlutter(std::string moduleName, std::string pluginVersion, std::string type);
