@@ -523,11 +523,27 @@ extern int goFlutter(lua_State *L) {
     
     std::string module = lua_tostring(L, 1);
     
-    std::string version = lua_tostring(L, 2);
-
-    std::string type = lua_tostring(L, 3);
-
-    goFlutter(module, version, type);
+    int number = lua_gettop(L);
+    
+    if (number == 3) {
+        std::string version = lua_tostring(L, 2);
+        
+        std::string type = lua_tostring(L, 3);
+        
+        goFlutter(module, version, type);
+        
+    }else if (number == 2){
+        
+        std::string version = lua_tostring(L, 2);
+        
+        goFlutter(module, version, "flutter");
+        
+    }else{
+        
+        goFlutter(module, "1.0.0", "flutter");
+    }
+    
+    
     
     END_STACK_MODIFY(L, 0)
     
