@@ -24,6 +24,7 @@ extern "C" {
 #include "lua_notify.h"
 #include "LuakitLoader.h"
 #include "xxtea.h"
+#include "lua_language.h"
 
 static bool  _xxteaEnabled = false;
 static char* _xxteaKey = NULL;
@@ -246,6 +247,7 @@ extern int luaInit(lua_State* L)
     luaL_openlibs(L);
     luaopen_file(L);
     luaopen_mobdebug_scripts(L);
+    luaopen_language(L);
     luaopen_lsqlite3(L);
 #if defined(OS_ANDROID)
     luaopen_service(L);
