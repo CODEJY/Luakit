@@ -540,7 +540,7 @@ extern int goFlutter(lua_State *L) {
         
     }else{
         
-        goFlutter(module, "1.0.0", "flutter");
+        goFlutter(module, "", "flutter");
     }
     
     
