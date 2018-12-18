@@ -352,9 +352,10 @@ local yogaBuilder = function(container)
             local moduleName = "record_search"
             local moduleVersion = ""
             local type = "flutter"
-            goFlutter(moduleName, moduleVersion, type)
+            local url = "www.google.com"
+            goFlutter(moduleName, moduleVersion, type, url)
         else
-            goFlutter("", "", "") --TODO
+            goFlutter("", "", "", "") --TODO
         end
     end
 end
