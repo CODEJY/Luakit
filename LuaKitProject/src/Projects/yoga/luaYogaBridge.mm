@@ -5,15 +5,15 @@
 
 #import "LuaTableView.h"
 #import <objc/runtime.h>
-extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-    
-}
-#include "common/business_runtime.h"
-#include "tools/lua_helpers.h"
+
+#include <LuakitPod/lua_helpers.h>
+#include <LuakitPod/business_client_thread.h>
+
+
 #import "UIImage+Add.h"
 #import "SodaGlobalProgressHud.h"
+
+#import "MOSDownloader.h"
 
 @interface UIView (LuaGesture)
 
@@ -327,14 +327,12 @@ void setImagePath(void * imageView,  std::string imagePath)
     
     UIImageView * v = (__bridge UIImageView *)imageView;
     
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *resourcePath = [bundle resourcePath];
-    NSString *filePath = [resourcePath stringByAppendingPathComponent:@"folder_screenShot.png"];
-// /Users/pengweijun/luaYoga/AndroidDemo/app/src/main/assets/rank_4.png
-//    NSString *filePath= [NSString stringWithFormat:@"%s",imagePath.c_str()];
+    NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString * path = [[paths objectAtIndex:0] stringByAppendingPathComponent:kDownload_Prefix] ;
     
-//    v.image = [UIImage imageWithContentsOfFile:filePath];
-    v.image = [UIImage imageNamed:str];
+    NSString *filePath = [path stringByAppendingPathComponent:str];
+    
+    v.image = [UIImage imageWithContentsOfFile:filePath];
 
 }
 
@@ -521,4 +519,13 @@ void showToast(std::string toastContent){
     NSString *toastContentStr = [NSString stringWithCString:toastContent.c_str() encoding:NSUTF8StringEncoding];
     
     [NSObject presentMessageTips:toastContentStr];
+}
+
+void goFlutter(std::string moduleName, std::string pluginVersion, std::string type, std::string url){
+    NSString *moduleNameStr = [NSString stringWithCString:moduleName.c_str() encoding:NSUTF8StringEncoding];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"Plugin_Tools_Flutter" object:moduleNameStr];
+    
+    [NSObject presentMessageTips:[NSString stringWithFormat:@"来啦老弟～:%@",moduleNameStr]];
+    
 }
