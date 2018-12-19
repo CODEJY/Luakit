@@ -328,7 +328,7 @@ void setImagePath(void * imageView,  std::string imagePath)
     UIImageView * v = (__bridge UIImageView *)imageView;
     
     NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString * path = [[paths objectAtIndex:0] stringByAppendingPathComponent:kLuaImage_Prefix] ;
+    NSString * path = [paths objectAtIndex:0] ;
     
     NSString *filePath = [path stringByAppendingPathComponent:str];
     
