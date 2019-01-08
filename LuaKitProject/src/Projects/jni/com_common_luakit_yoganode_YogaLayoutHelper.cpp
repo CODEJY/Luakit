@@ -24,7 +24,10 @@ JNIEXPORT jint JNICALL Java_com_common_luakit_yoganode_YogaLayoutHelper_getItemc
     BEGIN_STACK_MODIFY(state);
     assert(rootView != 0);
     pushUserdataInStrongTable(state,(void *)rootView);
-    assert(lua_type(state, -1) == LUA_TTABLE);
+    if (lua_type(state, -1) != LUA_TTABLE) {
+        return 0;
+    }
+    // assert(lua_type(state, -1) == LUA_TTABLE);
     lua_pushlightuserdata(state, (void *)hostView);
     lua_rawget(state, -2);
     assert(lua_type(state, -1) == LUA_TUSERDATA);
