@@ -15,6 +15,8 @@
 
 #import "MOSPackagesFileManger.h"
 #import <YYCategories/YYCategories.h>
+#import "UIImageView+SodaWebCache.h"
+
 
 @interface UIView (LuaGesture)
 
@@ -132,7 +134,7 @@ void * addView(void * parentView, YogaType type, void * root)
             break;
         case TEXT:{
             child = [[UILabel alloc]init];
-
+            
         }
             break;
         default:
@@ -141,7 +143,7 @@ void * addView(void * parentView, YogaType type, void * root)
     child.yoga.isEnabled = YES;
     
     [v addSubview:child];
-
+    
     return (__bridge void *)child;
 }
 
@@ -327,18 +329,27 @@ void setImagePath(void * imageView,  std::string imagePath)
 {
     
     NSString *str= [NSString stringWithFormat:@"%s",imagePath.c_str()];
- 
     UIImageView * v = (__bridge UIImageView *)imageView;
     
-    NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString * path = [paths objectAtIndex:0] ;
     
-    NSString *filePath = [path stringByAppendingPathComponent:str];
-    if (![NSFileManager.defaultManager fileExistsAtPath:filePath]) {
-        filePath = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:str];
+    if ([str hasPrefix:@"http"]) {
+        // 由于安卓这里加了此类判断， 只好同步加上
+        
+        [v soda_setImageWithURL:[NSURL URLWithString:str]];
+        
+    }else{
+        NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString * path = [paths objectAtIndex:0] ;
+        
+        NSString *filePath = [path stringByAppendingPathComponent:str];
+        if (![NSFileManager.defaultManager fileExistsAtPath:filePath]) {
+            filePath = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:str];
+        }
+        v.image = [UIImage imageWithContentsOfFile:filePath];
+        
     }
-    v.image = [UIImage imageWithContentsOfFile:filePath];
-
+    
+    
 }
 
 void setViewCornerRadius(void *view, float cornerRadius)
@@ -375,12 +386,12 @@ void setHighlighted(void * imageView,  float isHighlighted){
 void setImageTable(void * imageView,
                    std::string imageName_Normal ,
                    std::string imageName_Highlighted){
-  
+    
     UIImageView * v = (__bridge UIImageView *)imageView;
-
+    
     NSString *str_normal = [NSString stringWithFormat:@"%s",imageName_Normal.c_str()];
     NSString *str_highlighted = [NSString stringWithFormat:@"%s",imageName_Highlighted.c_str()];
-
+    
     
     if (str_normal.length) {
         v.image = [UIImage imageNamed:str_normal];
@@ -395,7 +406,7 @@ void setImageTable(void * imageView,
 void setImageColorTable(void * imageView,
                         std::vector<float> color,       //普通状态-颜色生成Image
                         std::vector<float> color_hl){   //高亮状态-颜色生成Image
-
+    
     
     UIImageView * v = (__bridge UIImageView *)imageView;
     
@@ -477,9 +488,9 @@ float heightForTextTable(std::string text,float textWidth,float textFontSize,std
     }
     
     CGRect  rect = [textStr boundingRectWithSize:CGSizeMake(textWidth, MAXFLOAT)
-                                      options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                   attributes:@{NSFontAttributeName:targetFont}
-                                      context:nil];
+                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                      attributes:@{NSFontAttributeName:targetFont}
+                                         context:nil];
     
     
     return rect.size.height;
@@ -534,5 +545,5 @@ void goFlutter(std::string moduleName, std::string pluginVersion, std::string ty
     NSString *urlStr = [NSString stringWithCString:url.c_str() encoding:NSUTF8StringEncoding];
     
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Plugin_Tools_Flutter" object:moduleNameStr userInfo:@{@"moduleName":moduleNameStr, @"pluginVersion":pluginVersionStr, @"type":typeStr, @"url":urlStr }];     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Plugin_Tools_Flutter" object:moduleNameStr userInfo:@{@"moduleName":moduleNameStr, @"pluginVersion":pluginVersionStr, @"type":typeStr, @"url":urlStr }];
 }
