@@ -71,3 +71,9 @@ float widthForTextTable(std::string text,float textHeight,float textFontSize,std
 void showToast(std::string toastContent);
 
 void goFlutter(std::string moduleName, std::string pluginVersion, std::string type, std::string url);
+
+void addTapGesture(void * view, void *root);
+void onTapGesture(void * view);
+
+void addLongPressGesture(void * view, void *root);
+void onLongPressGesture(void * view);

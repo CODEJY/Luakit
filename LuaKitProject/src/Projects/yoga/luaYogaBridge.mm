@@ -547,3 +547,9 @@ void goFlutter(std::string moduleName, std::string pluginVersion, std::string ty
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Plugin_Tools_Flutter" object:moduleNameStr userInfo:@{@"moduleName":moduleNameStr, @"pluginVersion":pluginVersionStr, @"type":typeStr, @"url":urlStr }];
 }
+
+void onTapGesture(void * view){
+}
+
+void onLongPressGesture(void * view){
+}

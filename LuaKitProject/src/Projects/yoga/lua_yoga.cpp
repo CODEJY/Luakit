@@ -597,6 +597,14 @@ extern int showToast(lua_State *state) {
     return 0;
 }
 
+extern void callbackToYoga(int type, void * v) {
+    if (type == 0) {
+        onTapGesture(v);
+    } else if (type == 1) {
+        onLongPressGesture(v);
+    }
+}
+
 static void addYogaEnum(lua_State *L) {
     //    YGAlign
     lua_pushinteger(L, 0);
